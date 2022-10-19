@@ -1,15 +1,20 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using View.Data;
+using Microsoft.EntityFrameworkCore;
+using Model.Configurations;
 using MudBlazor.Services;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<StorageDbContext>( 
+    options => options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"), 
+        new MySqlServerVersion(new Version(8,0,27))
+    )
+);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddMudServices();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
