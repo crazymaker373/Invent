@@ -1084,11 +1084,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\GitRepos\\blazorserver\\Invent\\Domain\\Domain.csproj": {
-              "projectPath": "D:\\GitRepos\\blazorserver\\Invent\\Domain\\Domain.csproj"
+            "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Domain\\Domain.csproj": {
+              "projectPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Domain\\Domain.csproj"
             },
-            "D:\\GitRepos\\blazorserver\\Invent\\Model\\Model.csproj": {
-              "projectPath": "D:\\GitRepos\\blazorserver\\Invent\\Model\\Model.csproj"
+            "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Model\\Model.csproj": {
+              "projectPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Model\\Model.csproj"
             }
           }
         }
