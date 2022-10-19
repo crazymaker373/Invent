@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitRepos\\blazorserver\\Invent\\Controller\\Controller.csproj": {}
+    "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Controller\\Controller.csproj": {}
   },
   "projects": {
-    "D:\\GitRepos\\blazorserver\\Invent\\Controller\\Controller.csproj": {
+    "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Controller\\Controller.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitRepos\\blazorserver\\Invent\\Controller\\Controller.csproj",
+        "projectUniqueName": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Controller\\Controller.csproj",
         "projectName": "Controller",
-        "projectPath": "D:\\GitRepos\\blazorserver\\Invent\\Controller\\Controller.csproj",
-        "packagesPath": "C:\\Users\\magen\\.nuget\\packages\\",
-        "outputPath": "D:\\GitRepos\\blazorserver\\Invent\\Controller\\obj\\",
+        "projectPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Controller\\Controller.csproj",
+        "packagesPath": "C:\\Users\\Tobias\\.nuget\\packages\\",
+        "outputPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Controller\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\magen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Tobias\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -49,7 +49,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -61,7 +62,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

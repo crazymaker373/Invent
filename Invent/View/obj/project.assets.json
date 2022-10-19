@@ -591,19 +591,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\magen\\.nuget\\packages\\": {}
+    "C:\\Users\\Tobias\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitRepos\\blazorserver\\Invent\\View\\View.csproj",
+      "projectUniqueName": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\View\\View.csproj",
       "projectName": "View",
-      "projectPath": "D:\\GitRepos\\blazorserver\\Invent\\View\\View.csproj",
-      "packagesPath": "C:\\Users\\magen\\.nuget\\packages\\",
-      "outputPath": "D:\\GitRepos\\blazorserver\\Invent\\View\\obj\\",
+      "projectPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\View\\View.csproj",
+      "packagesPath": "C:\\Users\\Tobias\\.nuget\\packages\\",
+      "outputPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\View\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\magen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Tobias\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -638,7 +638,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -650,7 +651,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }
