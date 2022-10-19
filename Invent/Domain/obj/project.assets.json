@@ -803,19 +803,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Tobias\\.nuget\\packages\\": {}
+    "C:\\Users\\magen\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Domain\\Domain.csproj",
+      "projectUniqueName": "D:\\GitRepos\\blazorserver\\Invent\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Domain\\Domain.csproj",
-      "packagesPath": "C:\\Users\\Tobias\\.nuget\\packages\\",
-      "outputPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Domain\\obj\\",
+      "projectPath": "D:\\GitRepos\\blazorserver\\Invent\\Domain\\Domain.csproj",
+      "packagesPath": "C:\\Users\\magen\\.nuget\\packages\\",
+      "outputPath": "D:\\GitRepos\\blazorserver\\Invent\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Tobias\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\magen\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
@@ -827,8 +827,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Model\\Model.csproj": {
-              "projectPath": "D:\\HTL-Krems\\5AHIT\\ITPL\\blazorserver\\Invent\\Model\\Model.csproj"
+            "D:\\GitRepos\\blazorserver\\Invent\\Model\\Model.csproj": {
+              "projectPath": "D:\\GitRepos\\blazorserver\\Invent\\Model\\Model.csproj"
             }
           }
         }
@@ -856,8 +856,7 @@
           "net47",
           "net471",
           "net472",
-          "net48",
-          "net481"
+          "net48"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -866,7 +865,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
