@@ -1,9 +1,39 @@
 ﻿@page "/"
+@using Domain.Repositories
+@using Model.Entities
+@inject IRepository<Inventory> _inventoryRepository
+@inject NavigationManager _navigationManager
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (Inventories != null) {
+    foreach (var inventory in Inventories) {
+        <MudCard Class="col-4">
+                <MudCardMedia Image="images/door.jpg" Height="200" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">@inventory.Name</MudText>
+                    <MudText Typo="Typo.body2">Last edited: </MudText>
+                    <MudText Typo="Typo.body2">Created At: @inventory.CreatedAt</MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit">Edit</MudButton>
+                </MudCardActions>
+            </MudCard>
+    }
+} else {
+    <MudText Typo="Typo.h5">Noch kein Inventar erstellt</MudText>
+    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => { _navigationManager.NavigateTo("/create"); })" StartIcon="@Icons.Material.Filled.Add">Inventar erstellen</MudButton>
+}
 
-Welcome to your new app.
+<MudFab Class="position-fixed" Style="bottom: 10px; right: 10px" Color="Color.Primary" OnClick="@(() => { _navigationManager.NavigateTo("/create"); })" StartIcon="@Icons.Material.Filled.Add"/>
 
-<SurveyPrompt Title="How is Blazor working for you?"/>
+@code {
+
+    public List<Inventory> Inventories { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Inventories = await _inventoryRepository.ReadAllAsync();
+    }
+
+}

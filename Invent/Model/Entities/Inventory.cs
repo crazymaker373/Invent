@@ -17,4 +17,7 @@ public class Inventory {
     
     [Column("CREATED_AT")] 
     public DateTime CreatedAt { get; set; }
+    
+    [Column("LAST_EDIT")] 
+    public DateTime LastEdit { get; set; }
 }

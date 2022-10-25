@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Model.Configurations;
+using Model.Entities;
 using MudBlazor.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<StorageDbContext>( 
@@ -15,6 +15,7 @@ builder.Services.AddDbContext<StorageDbContext>(
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
+builder.Services.AddScoped<IRepository<Inventory>, InventoryRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
