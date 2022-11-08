@@ -16,7 +16,7 @@ public class Inventory {
     public string Name { get; set; }
     
     [Column("CREATED_AT")] 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
     
     [Column("LAST_EDIT")] 
     public DateTime LastEdit { get; set; }

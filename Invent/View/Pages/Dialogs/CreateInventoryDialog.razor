@@ -1,0 +1,48 @@
+﻿@using Model.Entities
+@using Domain.Repositories
+@using Microsoft.CodeAnalysis.VisualBasic
+@using Model.Configurations
+@inject IInventoryRepository _inventoryRepository
+@inject NavigationManager _navigationManager
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h5">Create Inventory</MudText>
+    </DialogContent>
+    <DialogActions>
+        <EditForm Model="@Inventory" OnValidSubmit="OnValidSubmitAsync" class="container-fluid">
+            <DataAnnotationsValidator/>
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Name" @bind-Value="Inventory.Name" For="@(() => Inventory.Name)"/>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton OnClick="Cancel">Cancel</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Create</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    public Inventory Inventory { get; set; } = new();
+    
+    bool success;
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+
+
+    private async Task OnValidSubmitAsync(EditContext context) {
+        success = true;
+        await _inventoryRepository.CreateAsync(Inventory);
+        Submit();
+        _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
+    }
+
+}

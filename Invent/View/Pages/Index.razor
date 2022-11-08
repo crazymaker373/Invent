@@ -1,39 +1,60 @@
 ﻿@page "/"
 @using Domain.Repositories
 @using Model.Entities
-@inject IRepository<Inventory> _inventoryRepository
+@using View.Pages.Dialogs
+@inherits SidebarComponent
+@inject IInventoryRepository _inventoryRepository
 @inject NavigationManager _navigationManager
+@inject IDialogService DialogService
 
 <PageTitle>Home</PageTitle>
 
 @if (Inventories != null) {
     foreach (var inventory in Inventories) {
         <MudCard Class="col-4">
-                <MudCardMedia Image="images/door.jpg" Height="200" />
+            <MudLink Href=@($"/{inventory.Id}/items") Underline="Underline.None" Color="Color.Default" Class="text-decoration-none">
+                <MudCardMedia Image="images/inventory.png" Height="200"/>
                 <MudCardContent>
                     <MudText Typo="Typo.h5">@inventory.Name</MudText>
-                    <MudText Typo="Typo.body2">Last edited: </MudText>
+                    <MudText Typo="Typo.body2">Last edited: @inventory.LastEdit</MudText>
                     <MudText Typo="Typo.body2">Created At: @inventory.CreatedAt</MudText>
                 </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit">Edit</MudButton>
-                </MudCardActions>
-            </MudCard>
+            </MudLink>
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditInventoryDialog(inventory)">Edit</MudButton>
+            </MudCardActions>
+        </MudCard>
     }
-} else {
+}
+else {
     <MudText Typo="Typo.h5">Noch kein Inventar erstellt</MudText>
-    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => { _navigationManager.NavigateTo("/create"); })" StartIcon="@Icons.Material.Filled.Add">Inventar erstellen</MudButton>
+    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="OpenCreateInventoryDialog" StartIcon="@Icons.Material.Filled.Add">Inventar erstellen</MudButton>
 }
 
-<MudFab Class="position-fixed" Style="bottom: 10px; right: 10px" Color="Color.Primary" OnClick="@(() => { _navigationManager.NavigateTo("/create"); })" StartIcon="@Icons.Material.Filled.Add"/>
+<MudFab Class="floating-button" Color="Color.Primary" OnClick="OpenCreateInventoryDialog" StartIcon="@Icons.Material.Filled.Add"/>
 
 @code {
 
     public List<Inventory> Inventories { get; set; }
-    
-    protected override async Task OnInitializedAsync()
-    {
+
+    protected override async Task OnInitializedAsync() {
         Inventories = await _inventoryRepository.ReadAllAsync();
+        
+        
+        await base.OnInitializedAsync();
+    }
+    
+    private void OpenEditInventoryDialog(Inventory inventory)
+    {
+        var parameters = new DialogParameters(){ {"Inventory", inventory} };
+        var options = new DialogOptions { CloseOnEscapeKey = true, FullWidth = true};
+        DialogService.Show<EditInventoryDialog>("", parameters, options);
+    }
+    
+    private void OpenCreateInventoryDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true, FullWidth = true};
+        DialogService.Show<CreateInventoryDialog>("", options);
     }
 
 }

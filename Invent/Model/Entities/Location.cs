@@ -15,10 +15,6 @@ public class Location {
     [Required]
     public string Name { get; set; }
 
-    [Column("LOCATION", TypeName = "VARCHAR(45)")]
-    [Required]
-    public string LocationName { get; set; }
-
     [Column("IS_REMOTE")]
     [Required]
     public bool IsRemote { get; set; }

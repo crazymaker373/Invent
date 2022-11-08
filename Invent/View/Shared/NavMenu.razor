@@ -1,3 +1,26 @@
-﻿<MudNavMenu>
+﻿@using Domain.Services
+@inject SidebarService _SidebarService
+
+<MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+    @foreach (var item in _SidebarService.SidebarItems) {
+        if (item.OnClick is not null) {
+            <MudNavLink OnClick="@(() => item.OnClick.Invoke())" Match="NavLinkMatch.All">@item.Name</MudNavLink>
+        }
+        else {
+            <MudNavLink Href="@item.Link" Match="NavLinkMatch.All">@item.Name</MudNavLink>
+        }
+    }
 </MudNavMenu>
+
+@code {
+
+    protected override void OnInitialized() {
+        _SidebarService.HandleSidebarChange += HandleSidebarChange;
+    }
+
+    private async void HandleSidebarChange() {
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

@@ -1,10 +1,11 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Model.Configurations;
+using Model.Entities;
 
 namespace Domain.Repositories;
 
-public class ARepository<TEntity>: IRepository<TEntity> where TEntity: class{
+public abstract class ARepository<TEntity>: IRepository<TEntity> where TEntity: class{
     private readonly StorageDbContext _context;
     protected readonly DbSet<TEntity> Set;
 
@@ -28,9 +29,6 @@ public class ARepository<TEntity>: IRepository<TEntity> where TEntity: class{
     }
 
     public async Task UpdateAsync(TEntity entity){
-
-        //_context.BlockedPirates.First(e => e.Svnr == "10").Active;
-        
         _context.ChangeTracker.Clear();
         Set.Update(entity);
         await _context.SaveChangesAsync();

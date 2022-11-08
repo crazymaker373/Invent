@@ -30,6 +30,10 @@ namespace Model.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("CREATED_AT");
 
+                    b.Property<DateTime>("LastEdit")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("LAST_EDIT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext")
@@ -102,11 +106,6 @@ namespace Model.Migrations
                     b.Property<bool>("IsRemote")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("IS_REMOTE");
-
-                    b.Property<string>("LocationName")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR(45)")
-                        .HasColumnName("LOCATION");
 
                     b.Property<string>("Name")
                         .IsRequired()

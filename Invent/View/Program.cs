@@ -1,8 +1,22 @@
+using System.Diagnostics;
 using Domain.Repositories;
+using Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Model.Configurations;
 using Model.Entities;
 using MudBlazor.Services;
+
+//start docker container
+//var process = new Process();
+//var startInfo = new ProcessStartInfo{
+//    WindowStyle = ProcessWindowStyle.Hidden,
+//    FileName = "cmd.exe"
+//};
+//process.StartInfo = startInfo;
+//process.StartInfo.Arguments = "/c cd ..\\..\\Database && docker-compose down && docker-compose up -d --build";
+//process.Start();
+//process.WaitForExit();
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<StorageDbContext>( 
     options => options.UseMySql(
@@ -15,7 +29,10 @@ builder.Services.AddDbContext<StorageDbContext>(
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
-builder.Services.AddScoped<IRepository<Inventory>, InventoryRepository>();
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IRepository<Location>, LocationRepository>();
+builder.Services.AddScoped<SidebarService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
