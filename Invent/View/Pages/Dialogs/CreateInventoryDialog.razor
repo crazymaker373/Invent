@@ -1,5 +1,4 @@
-﻿@inject IInventoryRepository _inventoryRepository
-@inject NavigationManager _navigationManager
+﻿@inject IInventoryRepository InventoryRepository
 
 <MudDialog>
     <DialogContent>
@@ -24,7 +23,7 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; }
+    MudDialogInstance MudDialog { get; set; } = null!;
 
     public Inventory Inventory { get; set; } = new();
 
@@ -38,7 +37,7 @@
 
 
     private async Task OnValidSubmitAsync(EditContext context) {
-        await _inventoryRepository.CreateAsync(Inventory);
+        await InventoryRepository.CreateAsync(Inventory);
         Submit();
     }
 

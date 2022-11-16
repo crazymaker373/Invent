@@ -1,4 +1,4 @@
-﻿@inject IInventoryRepository _inventoryRepository
+﻿@inject IInventoryRepository InventoryRepository
 
 <MudDialog>
     <DialogContent>
@@ -13,10 +13,10 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; }
+    MudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter]
-    public Inventory Inventory { get; set; }
+    public Inventory Inventory { get; set; } = null!;
 
     void Submit() {
         MudDialog.Close(DialogResult.Ok(Inventory));
@@ -28,7 +28,7 @@
 
 
     private async void DeleteInventory(Inventory inventory) {
-        await _inventoryRepository.DeleteAsync(inventory);
+        await InventoryRepository.DeleteAsync(inventory);
         Submit();
     }
 

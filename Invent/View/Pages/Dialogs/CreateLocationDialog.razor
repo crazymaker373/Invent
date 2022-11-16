@@ -1,5 +1,5 @@
-﻿@inject ILocationRepository _locationRepository
-@inject IInventoryRepository _inventoryRepository
+﻿@inject ILocationRepository LocationRepository
+@inject IInventoryRepository InventoryRepository
 
 <MudDialog>
     <DialogContent>
@@ -25,7 +25,7 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; }
+    MudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter]
     public int InventoryId { get; set; }
@@ -43,9 +43,9 @@
 
     private async Task OnValidSubmitAsync(EditContext context) {
         Location.InventoryId = InventoryId;
-        await _locationRepository.CreateAsync(Location);
-        var current = await _inventoryRepository.ReadAsync(Convert.ToInt32(InventoryId));
-        await _inventoryRepository.UpdateLastEditAsync(current);
+        await LocationRepository.CreateAsync(Location);
+        var current = await InventoryRepository.ReadAsync(Convert.ToInt32(InventoryId));
+        await InventoryRepository.UpdateLastEditAsync(current!);
         Submit();
     }
 

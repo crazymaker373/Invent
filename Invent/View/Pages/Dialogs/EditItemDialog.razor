@@ -1,5 +1,5 @@
-﻿@inject IItemRepository _itemRepository
-@inject ILocationRepository _locationRepository
+﻿@inject IItemRepository ItemRepository
+@inject ILocationRepository LocationRepository
 
 <MudDialog>
     <DialogContent>
@@ -67,11 +67,11 @@
     }
 
     protected override async Task OnInitializedAsync() {
-        Locations = await _locationRepository.ReadGraphAsync(InventoryId);
+        Locations = await LocationRepository.ReadGraphAsync(InventoryId);
     }
 
     private async Task OnValidSubmit(EditContext context) {
-        await _itemRepository.UpdateAsync(Item);
+        await ItemRepository.UpdateAsync(Item);
         Console.WriteLine("Item updated");
         Submit();
     }

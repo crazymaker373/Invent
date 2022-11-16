@@ -1,4 +1,4 @@
-﻿@inject IItemRepository _itemRepository
+﻿@inject IItemRepository ItemRepository
 
 <MudDialog>
     <DialogContent>
@@ -13,10 +13,10 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; }
+    MudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter]
-    public Item Item { get; set; }
+    public Item Item { get; set; } = null!;
 
     void Submit() {
         MudDialog.Close(DialogResult.Ok(Item));
@@ -28,7 +28,7 @@
 
 
     private async void DeleteItem(Item item) {
-        await _itemRepository.DeleteAsync(item);
+        await ItemRepository.DeleteAsync(item);
         Submit();
     }
 
