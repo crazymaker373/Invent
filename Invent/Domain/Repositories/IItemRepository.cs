@@ -3,5 +3,5 @@
 namespace Domain.Repositories; 
 
 public interface IItemRepository : IRepository<Item> {
-    public Task<List<Item>> ReadAllLocationsAsync();
+    public Task<List<Item>> ReadGraphAsync(int id);
 }

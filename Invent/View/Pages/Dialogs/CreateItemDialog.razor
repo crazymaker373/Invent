@@ -1,9 +1,7 @@
 ﻿@using Model.Entities
 @using Domain.Repositories
-@using Model.Configurations
 @inject IItemRepository _itemRepository
-@inject NavigationManager _navigationManager
-@inject StorageDbContext _context
+@inject ILocationRepository _locationRepository
 
 <MudDialog>
     <DialogContent>
@@ -12,7 +10,7 @@
     <DialogActions>
         <EditForm Model="@NewItem" OnValidSubmit="OnValidSubmit" class="container-fluid">
             <DataAnnotationsValidator/>
-            <MudGrid>
+            <MudGrid Class="d-block">
                 <MudItem>
                     <MudCard>
                         <MudCardContent>
@@ -22,13 +20,14 @@
                                           @bind-Value="NewItem.Description" For="@(() => NewItem.Description)"/>
                             <MudTextField Label="Code" Class="mt-3"
                                           @bind-Value="NewItem.Code" For="@(() => NewItem.Code)"/>
-                            <MudSelect T="EItemType" Label="Itemtype" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" For="@(() => NewItem.ItemType)">
-                                <MudSelectItem Value="@EItemType.OTHER"/>
-                                <MudSelectItem Value="@EItemType.TOOL"/>
+                            <MudSelect T="EItemType" Label="Itemtype" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" @bind-Value="NewItem.ItemType" For="@(() => NewItem.ItemType)">
+                                @foreach (var type in Enum.GetValues<EItemType>()) {
+                                    <MudSelectItem Value="type"/>
+                                }
                             </MudSelect>
-                            <MudSelect T="Location" Label="Location" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" For="@(() => NewItem.Location)">
-                                @foreach (var location in _context.Set<Location>().ToList()) {
-                                    //TODO: Locations
+                            <MudSelect T="Location" Label="Location" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" @bind-Value="NewItem.Location" For="@(() => NewItem.Location)">
+                                @foreach (var location in Locations) {
+                                    <MudSelectItem Value="location">@location.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudCardContent>
@@ -48,19 +47,25 @@
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
 
-    public Item NewItem { get; set; } = new ();
-    bool success;
+    [Parameter]
+    public int InventoryId { get; set; }
+    
+    public Item NewItem { get; set; } = new();
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    public List<Location> Locations { get; set; } = new();
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(NewItem));
     void Cancel() => MudDialog.Cancel();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Locations = await _locationRepository.ReadGraphAsync(InventoryId);
+    }
 
 
     private void OnValidSubmit(EditContext context) {
-        success = true;
-        NewItem.LocationId = 1;
         _itemRepository.CreateAsync(NewItem);
         Submit();
-        _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
     }
 
 }

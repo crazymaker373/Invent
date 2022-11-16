@@ -1,13 +1,10 @@
 ﻿@using Model.Entities
 @using Domain.Repositories
-@using Microsoft.CodeAnalysis.VisualBasic
-@using Model.Configurations
 @inject IInventoryRepository _inventoryRepository
-@inject NavigationManager _navigationManager
 
 <MudDialog>
     <DialogContent>
-        <MudText Typo="Typo.h5">Edit Inventory</MudText>
+        <MudText Typo="Typo.h5">Edit @Inventory.Name</MudText>
     </DialogContent>
     <DialogActions>
         <EditForm Model="@Inventory" OnValidSubmit="OnValidSubmitAsync" class="container-fluid">
@@ -18,7 +15,6 @@
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton OnClick="Cancel">Cancel</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="Remove">Remove</MudButton>
                     <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Rename</MudButton>
                 </MudCardActions>
             </MudCard>
@@ -33,25 +29,15 @@
     
     [Parameter]
     public Inventory Inventory { get; set; }
-    
-    bool success;
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Submit() => MudDialog.Close(DialogResult.Ok(Inventory));
     void Cancel() => MudDialog.Cancel();
     
-    private void Remove()
-    {
-        _inventoryRepository.DeleteAsync(Inventory);
-        Submit();
-        _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
-    }
 
 
     private async Task OnValidSubmitAsync(EditContext context) {
-        success = true;
         await _inventoryRepository.UpdateAsync(Inventory);
         Submit();
-        _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
     }
 
 }

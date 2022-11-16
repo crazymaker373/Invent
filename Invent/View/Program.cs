@@ -31,7 +31,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
-builder.Services.AddScoped<IRepository<Location>, LocationRepository>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<SidebarService>();
 var app = builder.Build();
 

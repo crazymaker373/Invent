@@ -1,19 +1,21 @@
-﻿@page "/{id}/items"
+﻿@page "/{id:int}/items"
 @inherits SidebarComponent
 @using Domain.Repositories
 @using Model.Entities
 @using Model.Entities.Components
 @using View.Pages.Dialogs
+@using System.Runtime.InteropServices.ComTypes
 @inject IItemRepository _itemRepository
 @inject IDialogService DialogService
 @inject NavigationManager _navigationManager
 
+<PageTitle>Items</PageTitle>
+
 
 <h3>Items</h3>
 
-
 <MudDataGrid T="Item" MultiSelection="true" Items="@ItemList" SortMode="SortMode.Multiple" Filterable="true"
-             Hideable="true" RowClick="@RowClicked" SelectedItemsChanged="@SelectedItemsChanged">
+             Hideable="true" RowClick="@RowClicked" SelectedItemsChanged="@SelectedItemsChanged" Virtualize="true">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Items</MudText>
         <MudSpacer/>
@@ -23,12 +25,21 @@
     </ToolBarContent>
     <Columns>
         <HierarchyColumn T="Item"/>
-        <SelectColumn T="Item"/>
-        <Column T="Item" Field="Id" Title="Nr" Sortable="false" Filterable="false"/>
+        <Column T="Item" Field="Id" Title="Nr" Filterable="false"/>
         <Column T="Item" Field="Name"/>
-        <Column T="Item" Field="Location" Title="Position"/>
+        <Column T="Item" Title="Position" Sortable="false">
+            <CellTemplate>
+                <MudText>@context.Item.Location.Name</MudText>
+            </CellTemplate>
+        </Column>
         <Column T="Item" Field="ItemType"/>
         <Column T="Item" Field="Code" Sortable="false"/>
+        <Column T="Item" Sortable="false" Filterable="false">
+            <CellTemplate>
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
+                <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
+            </CellTemplate>
+        </Column>
     </Columns>
     <ChildRowContent>
         <MudCard>
@@ -54,22 +65,22 @@
 @code {
 
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
-    private List<Item> ItemList = new List<Item>();
+    private List<Item> ItemList = new();
     private string _searchString;
     private List<string> _events = new();
 
     protected override async Task OnInitializedAsync() {
-        ItemList = await _itemRepository.ReadAllLocationsAsync();
-        
+        ItemList = await _itemRepository.ReadGraphAsync(Convert.ToInt32(Id));
+
         SidebarItems.Add(new SidebarItem() {
             Name = "Locations",
-            Link = "/locations",
+            Link = $"{Id}/locations",
         });
         SidebarItems.Add(new SidebarItem() {
             Name = "Items",
-            Link = "/items",
+            Link = $"{Id}/items",
         });
         await base.OnInitializedAsync();
     }
@@ -84,9 +95,16 @@
         _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
     }
 
-    private void OpenCreateItemDialog() {
+    private async void OpenCreateItemDialog() {
+        var parameters = new DialogParameters() {{"InventoryId", Id}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
-        DialogService.Show<CreateItemDialog>("", options);
+        var dialog = DialogService.Show<CreateItemDialog>("", parameters, options);
+        
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
+        var resultItem = (Item) result.Data;
+        ItemList.Add(resultItem);
+        StateHasChanged();
     }
 
     private void OpenCreateLocationDialog() {
@@ -94,5 +112,30 @@
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         DialogService.Show<CreateLocationDialog>("", parameters, options);
     }
-
+    
+    private async void OpenDeleteItemDialog(Item item) {
+        var parameters = new DialogParameters() {{"Item", item}};
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var dialog = DialogService.Show<DeleteItemDialog>("", parameters, options);
+        
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
+        var resultItem = (Item) result.Data;
+        var index = ItemList.IndexOf(resultItem);
+        ItemList.RemoveAt(index);
+        StateHasChanged();
+    }
+    
+    private async void OpenEditItemDialog(Item item) {
+        var parameters = new DialogParameters() {{"Item", item}, {"InventoryId", Id}};
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var dialog = DialogService.Show<EditItemDialog>("", parameters, options);
+        
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
+        var resultItem = (Item) result.Data;
+        var index = ItemList.IndexOf(resultItem);
+        ItemList[index] = resultItem;
+        StateHasChanged();
+    }
 }

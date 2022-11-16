@@ -1,0 +1,32 @@
+﻿@using Model.Entities
+@using Domain.Repositories
+@inject IItemRepository _itemRepository
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h5">Delete Item</MudText>
+        <MudText>Are you sure you want to delete @Item.Name?</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton EndIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Outlined" OnClick="@(() => DeleteItem(Item))">Delete</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Item Item { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(Item));
+    void Cancel() => MudDialog.Cancel();
+
+
+    private async void DeleteItem(Item item) {
+        await _itemRepository.DeleteAsync(item);
+        Submit();
+    }
+
+}

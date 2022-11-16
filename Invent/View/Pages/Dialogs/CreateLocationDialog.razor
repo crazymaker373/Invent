@@ -1,11 +1,7 @@
 ﻿@using Model.Entities
 @using Domain.Repositories
-@using Microsoft.CodeAnalysis.VisualBasic
-@using Model.Configurations
-@using System.Reflection.Metadata.Ecma335
-@inject IRepository<Location> _locationRepository
+@inject ILocationRepository _locationRepository
 @inject IInventoryRepository _inventoryRepository
-@inject NavigationManager _navigationManager
 
 <MudDialog>
     <DialogContent>
@@ -34,24 +30,20 @@
     MudDialogInstance MudDialog { get; set; }
     
     [Parameter]
-    public string InventoryId { get; set; }
+    public int InventoryId { get; set; }
 
     public Location Location { get; set; } = new();
-    
-    bool success;
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Submit() => MudDialog.Close(DialogResult.Ok(Location));
     void Cancel() => MudDialog.Cancel();
 
 
     private async Task OnValidSubmitAsync(EditContext context) {
-        success = true;
-        Location.InventoryId = Convert.ToInt32(InventoryId);
+        Location.InventoryId = InventoryId;
         await _locationRepository.CreateAsync(Location);
         var current = await _inventoryRepository.ReadAsync(Convert.ToInt32(InventoryId));
         await _inventoryRepository.UpdateLastEditAsync(current);
         Submit();
-        _navigationManager.NavigateTo(_navigationManager.Uri, forceLoad: true);
     }
 
 }
