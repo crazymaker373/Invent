@@ -1,57 +1,59 @@
 ﻿@page "/"
-@using Domain.Repositories
-@using Model.Entities
-@using View.Pages.Dialogs
 @inherits SidebarComponent
-@inject IInventoryRepository _inventoryRepository
+@inject IInventoryRepository InventoryRepository
 @inject IDialogService DialogService
 
 <PageTitle>Home</PageTitle>
 
-@if (Inventories != null) {
-    <MudContainer Class="d-flex row align-center justify-center">
-            @foreach (var inventory in Inventories) {
-                <MudCard Class="col-4 m-2">
-                    <MudLink Href=@($"/{inventory.Id}/items") Underline="Underline.None" Color="Color.Default" Class="text-decoration-none">
-                        <MudCardMedia Image="images/inventory.png" Height="200"/>
-                        <MudCardContent>
-                            <MudText Typo="Typo.h5">@inventory.Name</MudText>
-                            <MudText Typo="Typo.body2">Last edited: @inventory.LastEdit</MudText>
-                            <MudText Typo="Typo.body2">Created At: @inventory.CreatedAt</MudText>
-                        </MudCardContent>
-                    </MudLink>
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditInventoryDialog(inventory)">Edit</MudButton>
-                        <MudSpacer/>
-                        <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteInventoryDialog(inventory)">Delete</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            }
-    </MudContainer>
-}
-else {
-    <MudText Typo="Typo.h5">Noch kein Inventar erstellt</MudText>
-    <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="OpenCreateInventoryDialog" StartIcon="@Icons.Material.Filled.Add">Inventar erstellen</MudButton>
-}
+<DataInit Data="Inventories">
+    <ChildContent Context="inventories">
+        @if (inventories.Any()) {
+            <MudContainer Class="d-flex row align-center justify-center">
+                @foreach (var inventory in Inventories) {
+                    <MudCard Class="col-4 m-2">
+                        <MudLink Href=@($"/{inventory.Id}/items") Underline="Underline.None" Color="Color.Default" Class="text-decoration-none">
+                            <MudCardMedia Image="images/inventory.png" Height="200"/>
+                            <MudCardContent>
+                                <MudText Typo="Typo.h5">@inventory.Name</MudText>
+                                <MudText Typo="Typo.body2">Last edited: @inventory.LastEdit</MudText>
+                                <MudText Typo="Typo.body2">Created At: @inventory.CreatedAt</MudText>
+                            </MudCardContent>
+                        </MudLink>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditInventoryDialog(inventory)">Edit</MudButton>
+                            <MudSpacer/>
+                            <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteInventoryDialog(inventory)">Delete</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                }
+            </MudContainer>
+        }
+        else {
+            <MudText Typo="Typo.h5">Noch kein Inventar erstellt</MudText>
+            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="OpenCreateInventoryDialog" StartIcon="@Icons.Material.Filled.Add">Inventar erstellen</MudButton>
+        }
+    </ChildContent>
+</DataInit>
+
 
 <MudFab Class="floating-button" Color="Color.Primary" OnClick="OpenCreateInventoryDialog" StartIcon="@Icons.Material.Filled.Add"/>
 
 @code {
 
-    public List<Inventory> Inventories { get; set; }
+    public List<Inventory> Inventories { get; set; } = null!;
 
     protected override async Task OnInitializedAsync() {
-        Inventories = await _inventoryRepository.ReadAllAsync();
+        Inventories = await InventoryRepository.ReadAllAsync();
 
 
         await base.OnInitializedAsync();
     }
 
     private async void OpenEditInventoryDialog(Inventory inventory) {
-        var parameters = new DialogParameters() {{"Inventory", inventory}};
+        var parameters = new DialogParameters {{"Inventory", inventory}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<EditInventoryDialog>("", parameters, options);
-        
+
         var result = await dialog.Result;
         if (result.Cancelled) return;
         var resultData = (Inventory) result.Data;
@@ -59,23 +61,24 @@ else {
         Inventories[index] = resultData;
         StateHasChanged();
     }
-    
+
     private async void OpenDeleteInventoryDialog(Inventory inventory) {
-        var parameters = new DialogParameters() {{"Inventory", inventory}};
+        var parameters = new DialogParameters {{"Inventory", inventory}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<DeleteInventoryDialog>("", parameters, options);
-        
+
         var result = await dialog.Result;
         if (result.Cancelled) return;
         var resultData = (Inventory) result.Data;
         Inventories.Remove(resultData);
         StateHasChanged();
+
     }
 
     private async void OpenCreateInventoryDialog() {
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<CreateInventoryDialog>("", options);
-        
+
         var result = await dialog.Result;
         if (result.Cancelled) return;
         var resultData = (Inventory) result.Data;

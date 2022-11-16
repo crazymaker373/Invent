@@ -1,6 +1,4 @@
-﻿@using Model.Entities
-@using Domain.Repositories
-@inject ILocationRepository _locationRepository
+﻿@inject ILocationRepository _locationRepository
 @inject IInventoryRepository _inventoryRepository
 
 <MudDialog>
@@ -28,14 +26,19 @@
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
-    
+
     [Parameter]
     public int InventoryId { get; set; }
 
     public Location Location { get; set; } = new();
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(Location));
-    void Cancel() => MudDialog.Cancel();
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(Location));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
 
 
     private async Task OnValidSubmitAsync(EditContext context) {

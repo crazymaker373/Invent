@@ -1,6 +1,6 @@
-﻿namespace Model.Entities; 
+﻿namespace Model.Entities;
 
 public enum EItemType {
     OTHER,
-    TOOL,
+    TOOL
 }

@@ -1,6 +1,4 @@
-﻿@using Model.Entities
-@using Domain.Repositories
-@inject IItemRepository _itemRepository
+﻿@inject IItemRepository _itemRepository
 
 <MudDialog>
     <DialogContent>
@@ -20,8 +18,13 @@
     [Parameter]
     public Item Item { get; set; }
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(Item));
-    void Cancel() => MudDialog.Cancel();
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(Item));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
 
 
     private async void DeleteItem(Item item) {

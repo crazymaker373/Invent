@@ -1,9 +1,9 @@
 ﻿@using Domain.Services
-@inject SidebarService _SidebarService
+@inject SidebarService SidebarService
 
 <MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
-    @foreach (var item in _SidebarService.SidebarItems) {
+    @foreach (var item in SidebarService.SidebarItems) {
         if (item.OnClick is not null) {
             <MudNavLink OnClick="@(() => item.OnClick.Invoke())" Match="NavLinkMatch.All">@item.Name</MudNavLink>
         }
@@ -16,7 +16,7 @@
 @code {
 
     protected override void OnInitialized() {
-        _SidebarService.HandleSidebarChange += HandleSidebarChange;
+        SidebarService.HandleSidebarChange += HandleSidebarChange;
     }
 
     private async void HandleSidebarChange() {

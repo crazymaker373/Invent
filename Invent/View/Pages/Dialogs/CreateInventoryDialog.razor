@@ -1,8 +1,4 @@
-﻿@using Model.Entities
-@using Domain.Repositories
-@using Microsoft.CodeAnalysis.VisualBasic
-@using Model.Configurations
-@inject IInventoryRepository _inventoryRepository
+﻿@inject IInventoryRepository _inventoryRepository
 @inject NavigationManager _navigationManager
 
 <MudDialog>
@@ -31,9 +27,14 @@
     MudDialogInstance MudDialog { get; set; }
 
     public Inventory Inventory { get; set; } = new();
-    
-    void Submit() => MudDialog.Close(DialogResult.Ok(Inventory));
-    void Cancel() => MudDialog.Cancel();
+
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(Inventory));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
 
 
     private async Task OnValidSubmitAsync(EditContext context) {

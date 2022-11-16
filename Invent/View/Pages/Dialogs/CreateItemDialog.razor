@@ -1,6 +1,4 @@
-﻿@using Model.Entities
-@using Domain.Repositories
-@inject IItemRepository _itemRepository
+﻿@inject IItemRepository _itemRepository
 @inject ILocationRepository _locationRepository
 
 <MudDialog>
@@ -49,16 +47,20 @@
 
     [Parameter]
     public int InventoryId { get; set; }
-    
+
     public Item NewItem { get; set; } = new();
 
     public List<Location> Locations { get; set; } = new();
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(NewItem));
-    void Cancel() => MudDialog.Cancel();
-    
-    protected override async Task OnInitializedAsync()
-    {
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(NewItem));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
+
+    protected override async Task OnInitializedAsync() {
         Locations = await _locationRepository.ReadGraphAsync(InventoryId);
     }
 

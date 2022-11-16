@@ -1,7 +1,4 @@
-﻿@using Model.Entities
-@using Domain.Repositories
-@using Model.Configurations
-@inject IItemRepository _itemRepository
+﻿@inject IItemRepository _itemRepository
 @inject ILocationRepository _locationRepository
 
 <MudDialog>
@@ -21,7 +18,7 @@
                                           @bind-Value="Item.Description" For="@(() => Item.Description)"/>
                             <MudTextField Label="Code" Class="mt-3"
                                           @bind-Value="Item.Code" For="@(() => Item.Code)"/>
-                            
+
                             <MudSelect T="EItemType" Label="Itemtype"
                                        Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter"
                                        @bind-Value="Item.ItemType" For="@(() => Item.ItemType)">
@@ -51,7 +48,7 @@
 @code {
 
     [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; }= null!;
+    MudDialogInstance MudDialog { get; set; } = null!;
 
     [Parameter]
     public Item Item { get; set; } = null!;
@@ -59,14 +56,18 @@
     [Parameter]
     public int InventoryId { get; set; }
 
-    public List<Location> Locations { get; set; } = new ();
+    public List<Location> Locations { get; set; } = new();
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(Item));
-    void Cancel() => MudDialog.Cancel();
-    
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(Item));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
+
     protected override async Task OnInitializedAsync() {
         Locations = await _locationRepository.ReadGraphAsync(InventoryId);
-
     }
 
     private async Task OnValidSubmit(EditContext context) {

@@ -1,22 +1,25 @@
-﻿using Domain.Repositories;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Controller.Controllers;
 
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc;
-
 public abstract class AController<TEntity> : ControllerBase where TEntity : class {
-    private IRepository<TEntity> _repository;
+    private readonly IRepository<TEntity> _repository;
 
     public AController(IRepository<TEntity> repository) {
         _repository = repository;
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<TEntity>> ReadAsync([Required] int id) => Ok(await _repository.ReadAsync(id));
+    public async Task<ActionResult<TEntity>> ReadAsync([Required] int id) {
+        return Ok(await _repository.ReadAsync(id));
+    }
 
     [HttpGet]
-    public async Task<ActionResult<List<TEntity>>> ReadAllAsync() => Ok(await _repository.ReadAllAsync());
+    public async Task<ActionResult<List<TEntity>>> ReadAllAsync() {
+        return Ok(await _repository.ReadAllAsync());
+    }
 
     [HttpPost]
     public async Task<ActionResult<TEntity>> CreateAsync([Required] TEntity entity) {
@@ -28,9 +31,7 @@ public abstract class AController<TEntity> : ControllerBase where TEntity : clas
     public async Task<ActionResult<TEntity>> UpdateAsync([Required] int id, [Required] TEntity entity) {
         var c = await _repository.ReadAsync(id);
 
-        if (c == null) {
-            return NotFound();
-        }
+        if (c == null) return NotFound();
 
         await _repository.UpdateAsync(entity);
         return NoContent();
@@ -40,9 +41,7 @@ public abstract class AController<TEntity> : ControllerBase where TEntity : clas
     public async Task<ActionResult<TEntity>> DeleteAsync([Required] int id) {
         var c = await _repository.ReadAsync(id);
 
-        if (c == null) {
-            return NotFound();
-        }
+        if (c == null) return NotFound();
 
         await _repository.DeleteAsync(c);
         return NoContent();

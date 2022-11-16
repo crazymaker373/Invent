@@ -1,6 +1,6 @@
 ﻿using Model.Entities;
 
-namespace Domain.Repositories; 
+namespace Domain.Repositories;
 
 public interface IInventoryRepository : IRepository<Inventory> {
     Task UpdateLastEditAsync(Inventory inventory);

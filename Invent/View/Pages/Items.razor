@@ -1,65 +1,65 @@
 ﻿@page "/{id:int}/items"
 @inherits SidebarComponent
-@using Domain.Repositories
-@using Model.Entities
-@using Model.Entities.Components
-@using View.Pages.Dialogs
-@using System.Runtime.InteropServices.ComTypes
-@inject IItemRepository _itemRepository
+@inject IItemRepository ItemRepository
 @inject IDialogService DialogService
-@inject NavigationManager _navigationManager
 
 <PageTitle>Items</PageTitle>
 
 
 <h3>Items</h3>
 
-<MudDataGrid T="Item" MultiSelection="true" Items="@ItemList" SortMode="SortMode.Multiple" Filterable="true"
-             Hideable="true" RowClick="@RowClicked" SelectedItemsChanged="@SelectedItemsChanged" Virtualize="true">
-    <ToolBarContent>
-        <MudText Typo="Typo.h6">Items</MudText>
-        <MudSpacer/>
-        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
-        </MudTextField>
-    </ToolBarContent>
-    <Columns>
-        <HierarchyColumn T="Item"/>
-        <Column T="Item" Field="Id" Title="Nr" Filterable="false"/>
-        <Column T="Item" Field="Name"/>
-        <Column T="Item" Title="Position" Sortable="false">
-            <CellTemplate>
-                <MudText>@context.Item.Location.Name</MudText>
-            </CellTemplate>
-        </Column>
-        <Column T="Item" Field="ItemType"/>
-        <Column T="Item" Field="Code" Sortable="false"/>
-        <Column T="Item" Sortable="false" Filterable="false">
-            <CellTemplate>
-                <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
-                <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
-            </CellTemplate>
-        </Column>
-    </Columns>
-    <ChildRowContent>
-        <MudCard>
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">@context.Item.Name</MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudText>@context.Item.Description</MudText>
-            </MudCardContent>
-        </MudCard>
-    </ChildRowContent>
-    <PagerContent>
-        <MudDataGridPager T="Item"/>
-    </PagerContent>
-</MudDataGrid>
+<DataInit Data="ItemList">
+    <ChildContent Context="itemList">
+        <MudDataGrid T="Item" MultiSelection="true" Items="@itemList" SortMode="SortMode.Multiple" Filterable="true"
+                     Hideable="true" Virtualize="true">
+            <ToolBarContent>
+                <MudText Typo="Typo.h6">Items</MudText>
+                <MudSpacer/>
+                <MudTextField T="string" Value="_searchString" ValueChanged="Search" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
+                </MudTextField>
+            </ToolBarContent>
+            <Columns>
+                <HierarchyColumn T="Item"/>
+                <Column T="Item" Field="Id" Title="Nr" Filterable="false"/>
+                <Column T="Item" Field="Name"/>
+                <Column T="Item" Title="Position" Sortable="false">
+                    <CellTemplate>
+                        <MudText>@context.Item.Location.Name</MudText>
+                    </CellTemplate>
+                </Column>
+                <Column T="Item" Field="ItemType"/>
+                <Column T="Item" Field="Code" Sortable="false"/>
+                <Column T="Item" Sortable="false" Filterable="false">
+                    <CellTemplate>
+                        <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
+                        <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
+                    </CellTemplate>
+                </Column>
+            </Columns>
+            <ChildRowContent>
+                <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6">@context.Item.Name</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText>@context.Item.Description</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </ChildRowContent>
+            <PagerContent>
+                <MudDataGridPager T="Item"/>
+            </PagerContent>
+        </MudDataGrid>
+        
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Class="floating-button" @onclick="OpenCreateItemDialog"/>
+        <MudFab Class="floating-button" Style="right: 100px !important;" Color="Color.Primary" OnClick="OpenCreateLocationDialog" StartIcon="@Icons.Material.Filled.Add"/>
 
-<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Class="floating-button" @onclick="OpenCreateItemDialog"/>
-<MudFab Class="floating-button" Style="right: 100px !important;" Color="Color.Primary" OnClick="OpenCreateLocationDialog" StartIcon="@Icons.Material.Filled.Add"/>
+    </ChildContent>
+</DataInit>
+
 
 
 @code {
@@ -67,39 +67,42 @@
     [Parameter]
     public int Id { get; set; }
 
-    private List<Item> ItemList = new();
-    private string _searchString;
-    private List<string> _events = new();
+    private List<Item> ItemList { get; set; } = null!;
+    private List<Item> ItemListBackup { get; set; } = null!;
+    private string? _searchString;
 
     protected override async Task OnInitializedAsync() {
-        ItemList = await _itemRepository.ReadGraphAsync(Convert.ToInt32(Id));
+        ItemList = await ItemRepository.ReadGraphAsync(Id);
+        ItemListBackup = ItemList;
 
-        SidebarItems.Add(new SidebarItem() {
+        SidebarItems.Add(new SidebarItem {
             Name = "Locations",
-            Link = $"{Id}/locations",
+            Link = $"{Id}/locations"
         });
-        SidebarItems.Add(new SidebarItem() {
+        SidebarItems.Add(new SidebarItem {
             Name = "Items",
-            Link = $"{Id}/items",
+            Link = $"{Id}/items"
         });
         await base.OnInitializedAsync();
+        
     }
 
-
-    // events
-    void RowClicked(DataGridRowClickEventArgs<Item> args) {
-        _events.Insert(0, $"Event = RowClick, Index = {args.RowIndex}, Data = {System.Text.Json.JsonSerializer.Serialize(args.Item)}");
+    void Search(string? searchString) {
+        _searchString = searchString;
+        if (!string.IsNullOrEmpty(_searchString) || !string.IsNullOrWhiteSpace(_searchString)) {
+            ItemList = ItemListBackup.Where(x => x.Name.Contains(_searchString)).ToList();
+        }
+        else {
+            ItemList = ItemListBackup;
+        }
     }
 
-    void SelectedItemsChanged(HashSet<Item> items) {
-        _events.Insert(0, $"Event = SelectedItemsChanged, Data = {System.Text.Json.JsonSerializer.Serialize(items)}");
-    }
 
     private async void OpenCreateItemDialog() {
-        var parameters = new DialogParameters() {{"InventoryId", Id}};
+        var parameters = new DialogParameters {{"InventoryId", Id}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<CreateItemDialog>("", parameters, options);
-        
+
         var result = await dialog.Result;
         if (result.Cancelled) return;
         var resultItem = (Item) result.Data;
@@ -108,16 +111,16 @@
     }
 
     private void OpenCreateLocationDialog() {
-        var parameters = new DialogParameters() {{"InventoryId", Id}};
+        var parameters = new DialogParameters {{"InventoryId", Id}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         DialogService.Show<CreateLocationDialog>("", parameters, options);
     }
-    
+
     private async void OpenDeleteItemDialog(Item item) {
-        var parameters = new DialogParameters() {{"Item", item}};
+        var parameters = new DialogParameters {{"Item", item}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<DeleteItemDialog>("", parameters, options);
-        
+
         var result = await dialog.Result;
         if (result.Cancelled) return;
         var resultItem = (Item) result.Data;
@@ -125,12 +128,12 @@
         ItemList.RemoveAt(index);
         StateHasChanged();
     }
-    
+
     private async void OpenEditItemDialog(Item item) {
-        var parameters = new DialogParameters() {{"Item", item}, {"InventoryId", Id}};
+        var parameters = new DialogParameters {{"Item", item}, {"InventoryId", Id}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<EditItemDialog>("", parameters, options);
-        
+
         var result = await dialog.Result;
         if (result.Cancelled) return;
         var resultItem = (Item) result.Data;
@@ -138,4 +141,5 @@
         ItemList[index] = resultItem;
         StateHasChanged();
     }
+
 }

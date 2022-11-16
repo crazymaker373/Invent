@@ -1,11 +1,10 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Model.Configurations;
-using Model.Entities;
 
 namespace Domain.Repositories;
 
-public abstract class ARepository<TEntity>: IRepository<TEntity> where TEntity: class{
+public abstract class ARepository<TEntity> : IRepository<TEntity> where TEntity : class {
     private readonly StorageDbContext _context;
     protected readonly DbSet<TEntity> Set;
 
@@ -14,13 +13,21 @@ public abstract class ARepository<TEntity>: IRepository<TEntity> where TEntity: 
         Set = _context.Set<TEntity>();
     }
 
-    public async Task<TEntity?> ReadAsync(int id) => await Set.FindAsync(id);
+    public async Task<TEntity?> ReadAsync(int id) {
+        return await Set.FindAsync(id);
+    }
 
-    public async Task<List<TEntity>> ReadAsync(Expression<Func<TEntity, bool>> filter) => await Set.Where(filter).ToListAsync();
+    public async Task<List<TEntity>> ReadAsync(Expression<Func<TEntity, bool>> filter) {
+        return await Set.Where(filter).ToListAsync();
+    }
 
-    public async Task<List<TEntity>> ReadAllAsync() => await Set.ToListAsync();
+    public async Task<List<TEntity>> ReadAllAsync() {
+        return await Set.ToListAsync();
+    }
 
-    public async Task<List<TEntity>> ReadAsync(int start, int count) => await Set.Skip(start).Take(count).ToListAsync();
+    public async Task<List<TEntity>> ReadAsync(int start, int count) {
+        return await Set.Skip(start).Take(count).ToListAsync();
+    }
 
     public async Task<TEntity> CreateAsync(TEntity entity) {
         Set.Add(entity);
@@ -28,7 +35,7 @@ public abstract class ARepository<TEntity>: IRepository<TEntity> where TEntity: 
         return entity;
     }
 
-    public async Task UpdateAsync(TEntity entity){
+    public async Task UpdateAsync(TEntity entity) {
         _context.ChangeTracker.Clear();
         Set.Update(entity);
         await _context.SaveChangesAsync();

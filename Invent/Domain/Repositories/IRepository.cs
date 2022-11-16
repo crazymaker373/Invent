@@ -2,7 +2,7 @@
 
 namespace Domain.Repositories;
 
-public interface IRepository<TEntity> where TEntity: class{
+public interface IRepository<TEntity> where TEntity : class {
     Task<TEntity?> ReadAsync(int id);
     Task<List<TEntity>> ReadAsync(Expression<Func<TEntity, bool>> filter);
     Task<List<TEntity>> ReadAllAsync();

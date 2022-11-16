@@ -1,6 +1,4 @@
-﻿@using Model.Entities
-@using Domain.Repositories
-@inject IInventoryRepository _inventoryRepository
+﻿@inject IInventoryRepository _inventoryRepository
 
 <MudDialog>
     <DialogContent>
@@ -20,8 +18,13 @@
     [Parameter]
     public Inventory Inventory { get; set; }
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(Inventory));
-    void Cancel() => MudDialog.Cancel();
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(Inventory));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
 
 
     private async void DeleteInventory(Inventory inventory) {

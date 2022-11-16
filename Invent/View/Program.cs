@@ -1,9 +1,7 @@
-using System.Diagnostics;
 using Domain.Repositories;
 using Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Model.Configurations;
-using Model.Entities;
 using MudBlazor.Services;
 
 //start docker container
@@ -18,10 +16,10 @@ using MudBlazor.Services;
 //process.WaitForExit();
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<StorageDbContext>( 
+builder.Services.AddDbContext<StorageDbContext>(
     options => options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"), 
-        new MySqlServerVersion(new Version(8,0,27))
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 27))
     )
 );
 
