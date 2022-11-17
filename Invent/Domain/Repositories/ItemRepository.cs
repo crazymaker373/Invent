@@ -10,7 +10,12 @@ public class ItemRepository : ARepository<Item>, IItemRepository {
 
     public async Task<List<Item>> ReadGraphAsync(int id) => await Set
         .Include(i => i.Location)
-        .ThenInclude(l => l.Inventory)
-        .Where(i => i.Location.Inventory.Id == id)
+        .Where(i => i.Location.InventoryId == id)
         .ToListAsync();
+
+    public async Task<List<Item>> ReadByLocationAsync(int locationId) => await Set
+        .Include(i => i.Location)
+        .Where(i => i.LocationId == locationId)
+        .ToListAsync();
+    
 }

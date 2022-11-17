@@ -2,7 +2,7 @@
 @inject SidebarService SidebarService
 
 <MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Inventories</MudNavLink>
     @foreach (var item in SidebarService.SidebarItems) {
         if (item.OnClick is not null) {
             <MudNavLink OnClick="@(() => item.OnClick.Invoke())" Match="NavLinkMatch.All">@item.Name</MudNavLink>

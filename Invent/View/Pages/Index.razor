@@ -11,7 +11,7 @@
             <MudContainer Class="d-flex row align-center justify-center">
                 @foreach (var inventory in Inventories) {
                     <MudCard Class="col-4 m-2">
-                        <MudLink Href=@($"/{inventory.Id}/items") Underline="Underline.None" Color="Color.Default" Class="text-decoration-none">
+                        <MudLink Href=@($"/{inventory.Id}/locations") Underline="Underline.None" Color="Color.Default" Class="text-decoration-none">
                             <MudCardMedia Image="images/inventory.png" Height="200"/>
                             <MudCardContent>
                                 <MudText Typo="Typo.h5">@inventory.Name</MudText>
@@ -40,7 +40,7 @@
 
 @code {
 
-    public List<Inventory> Inventories { get; set; } = null!;
+    List<Inventory> Inventories { get; set; } = null!;
 
     protected override async Task OnInitializedAsync() {
         Inventories = await InventoryRepository.ReadAllAsync();
@@ -49,7 +49,7 @@
         await base.OnInitializedAsync();
     }
 
-    private async void OpenEditInventoryDialog(Inventory inventory) {
+    async void OpenEditInventoryDialog(Inventory inventory) {
         var parameters = new DialogParameters {{"Inventory", inventory}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<EditInventoryDialog>("", parameters, options);
@@ -62,7 +62,7 @@
         StateHasChanged();
     }
 
-    private async void OpenDeleteInventoryDialog(Inventory inventory) {
+    async void OpenDeleteInventoryDialog(Inventory inventory) {
         var parameters = new DialogParameters {{"Inventory", inventory}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<DeleteInventoryDialog>("", parameters, options);
@@ -75,7 +75,7 @@
 
     }
 
-    private async void OpenCreateInventoryDialog() {
+    async void OpenCreateInventoryDialog() {
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<CreateInventoryDialog>("", options);
 

@@ -5,9 +5,9 @@ using Model.Entities.Components;
 namespace View.Pages.Components;
 
 public class SidebarComponent : ComponentBase {
-    public List<SidebarItem> SidebarItems { get; set; } = new();
+    protected List<SidebarItem> SidebarItems { get; set; } = new();
 
-    [Inject] public SidebarService SidebarService { get; set; }
+    [Inject] public SidebarService SidebarService { get; set; } = null!;
 
     protected override void OnInitialized() {
         SidebarService.RefreshSidebar(SidebarItems);

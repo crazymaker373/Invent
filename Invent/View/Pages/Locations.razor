@@ -1,0 +1,104 @@
+﻿@page "/{id:int}/locations"
+@inherits SidebarComponent
+@inject ILocationRepository LocationRepository
+@inject IDialogService DialogService
+
+
+<PageTitle>Locations</PageTitle>
+
+
+<h3>Locations</h3>
+
+<DataInit Data="LocationList">
+    <ChildContent Context="inventories">
+        @if (inventories.Any()) {
+            <MudContainer Class="d-flex row align-center justify-center">
+                @foreach (var location in LocationList) {
+                    <MudCard Class="col-4 m-2">
+                        <MudLink Href=@($"/{Id}/{location.Id}/items") Underline="Underline.None" Color="Color.Default" Class="text-decoration-none">
+                            <MudCardMedia Image="images/inventory.png" Height="200"/>
+                            <MudCardContent>
+                                <MudText Typo="Typo.h5">@location.Name</MudText>
+                            </MudCardContent>
+                        </MudLink>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditLocationDialog(location)">Edit</MudButton>
+                            <MudSpacer/>
+                            <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteLocationDialog(location)">Delete</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                }
+            </MudContainer>
+        }
+        else {
+            <MudText Typo="Typo.h5">No location found</MudText>
+            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="OpenCreateLocationDialog" StartIcon="@Icons.Material.Filled.Add">Add Location</MudButton>
+        }
+    </ChildContent>
+</DataInit>
+
+<MudFab Class="floating-button" Style="right: 100px !important;" Color="Color.Primary" OnClick="OpenCreateLocationDialog" StartIcon="@Icons.Material.Filled.Add"/>
+
+@code {
+    
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<Location> LocationList { get; set; } = null!;
+
+    protected override async Task OnParametersSetAsync() {
+        LocationList = await LocationRepository.ReadGraphAsync(Id);
+    }
+
+    protected override async Task OnInitializedAsync() {
+        SidebarItems.Add(new SidebarItem {
+            Name = "Locations",
+            Link = $"{Id}/locations"
+        });
+        SidebarItems.Add(new SidebarItem {
+            Name = "Items",
+            Link = $"{Id}/items"
+        });
+        await base.OnInitializedAsync();
+    }
+    
+    
+    private async void OpenCreateLocationDialog() {
+        var parameters = new DialogParameters {{"InventoryId", Id}};
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var dialog = DialogService.Show<CreateLocationDialog>("", parameters, options);
+        
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
+        var resultData = (Location) result.Data;
+        LocationList.Add(resultData);
+        StateHasChanged();
+    }
+
+    private async void OpenDeleteLocationDialog(Location location) {
+        var parameters = new DialogParameters {{"Location", location}};
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var dialog = DialogService.Show<DeleteLocationDialog>("", parameters, options);
+
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
+        var resultData = (Location) result.Data;
+        var index = LocationList.IndexOf(resultData);
+        LocationList.RemoveAt(index);
+        StateHasChanged();
+    }
+
+    private async void OpenEditLocationDialog(Location location) {
+        var parameters = new DialogParameters {{"Location", location}, {"InventoryId", Id}};
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var dialog = DialogService.Show<EditLocationDialog>("", parameters, options);
+
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
+        var resultData = (Location) result.Data;
+        var index = LocationList.IndexOf(resultData);
+        LocationList[index] = resultData;
+        StateHasChanged();
+    }
+
+}

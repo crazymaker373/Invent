@@ -1,0 +1,50 @@
+﻿@inject ILocationRepository LocationRepository
+@inject IInventoryRepository InventoryRepository
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h5">Edit @Location.Name</MudText>
+    </DialogContent>
+    <DialogActions>
+        <EditForm Model="@Location" OnValidSubmit="OnValidSubmitAsync" class="container-fluid">
+            <DataAnnotationsValidator/>
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Name" @bind-Value="Location.Name" For="@(() => Location.Name)"/>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton OnClick="Cancel">Cancel</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Rename</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public Location Location { get; set; } = null!;
+
+    [Parameter]
+    public int InventoryId { get; set; }
+
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(Location));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
+
+
+    private async Task OnValidSubmitAsync(EditContext context) {
+        await LocationRepository.UpdateAsync(Location);
+        await InventoryRepository.UpdateLastEditAsync(await InventoryRepository.ReadAsync(InventoryId));
+        Submit();
+    }
+
+}

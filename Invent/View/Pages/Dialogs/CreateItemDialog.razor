@@ -47,6 +47,9 @@
 
     [Parameter]
     public int InventoryId { get; set; }
+    
+    [Parameter]
+    public Location? Location { get; set; }
 
     public Item NewItem { get; set; } = new();
 
@@ -60,8 +63,9 @@
         MudDialog.Cancel();
     }
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnParametersSetAsync() {
         Locations = await LocationRepository.ReadGraphAsync(InventoryId);
+        NewItem.Location = Location ?? new Location();
     }
 
 
