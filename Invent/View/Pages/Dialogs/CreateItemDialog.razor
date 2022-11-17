@@ -65,7 +65,7 @@
 
     protected override async Task OnParametersSetAsync() {
         Locations = await LocationRepository.ReadGraphAsync(InventoryId);
-        NewItem.Location = Location ?? new Location();
+        NewItem.Location = Location ?? Locations.First();
     }
 
 

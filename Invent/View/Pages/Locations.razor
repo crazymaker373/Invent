@@ -3,32 +3,26 @@
 @inject ILocationRepository LocationRepository
 @inject IDialogService DialogService
 
-
 <PageTitle>Locations</PageTitle>
 
-
-<h3>Locations</h3>
+<MudText Align="Align.Center" Typo="Typo.h4">Locations</MudText>
 
 <DataInit Data="LocationList">
-    <ChildContent Context="inventories">
-        @if (inventories.Any()) {
-            <MudContainer Class="d-flex row align-center justify-center">
-                @foreach (var location in LocationList) {
-                    <MudCard Class="col-4 m-2">
-                        <MudLink Href=@($"/{Id}/{location.Id}/items") Underline="Underline.None" Color="Color.Default" Class="text-decoration-none">
-                            <MudCardMedia Image="images/inventory.png" Height="200"/>
-                            <MudCardContent>
-                                <MudText Typo="Typo.h5">@location.Name</MudText>
-                            </MudCardContent>
-                        </MudLink>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditLocationDialog(location)">Edit</MudButton>
-                            <MudSpacer/>
-                            <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteLocationDialog(location)">Delete</MudButton>
-                        </MudCardActions>
-                    </MudCard>
+    <ChildContent Context="locations">
+        @if (locations.Any()) {
+            <MudCarousel Class="mud-width-full full-height" ShowArrows="true" ShowBullets="false" EnableSwipeGesture="true" AutoCycle="false" TData="Location">
+                @foreach (var location in locations) {
+                    <MudCarouselItem Transition="Transition.Slide">
+                        <div>
+                            <div class="d-flex animate-up-down">
+                                <MudLink Href=@($"/{Id}/{location.Id}/items") Class="mx-auto my-auto"><MudImage  Src="room1.svg" Height="700"/></MudLink>
+                            </div>
+                            <MudText Align="Align.Center" Typo="Typo.h5">@location.Name</MudText>
+                            <MudText Align="Align.Center">@location.IsRemote</MudText>
+                        </div>
+                    </MudCarouselItem>
                 }
-            </MudContainer>
+            </MudCarousel>
         }
         else {
             <MudText Typo="Typo.h5">No location found</MudText>
@@ -39,8 +33,9 @@
 
 <MudFab Class="floating-button" Style="right: 100px !important;" Color="Color.Primary" OnClick="OpenCreateLocationDialog" StartIcon="@Icons.Material.Filled.Add"/>
 
-@code {
-    
+
+@code{
+
     [Parameter]
     public int Id { get; set; }
 
@@ -61,13 +56,13 @@
         });
         await base.OnInitializedAsync();
     }
-    
-    
+
+
     private async void OpenCreateLocationDialog() {
         var parameters = new DialogParameters {{"InventoryId", Id}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<CreateLocationDialog>("", parameters, options);
-        
+
         var result = await dialog.Result;
         if (result.Cancelled) return;
         var resultData = (Location) result.Data;
