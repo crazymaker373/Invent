@@ -31,7 +31,7 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
-builder.Services.AddScoped<IHashGeneratorService, HashGeneratorService>();
+builder.Services.AddSingleton<IHashGeneratorService, HashGeneratorService>();
 builder.Services.AddScoped<SidebarService>();
 var app = builder.Build();
 

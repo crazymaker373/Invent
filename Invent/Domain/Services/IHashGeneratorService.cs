@@ -4,5 +4,5 @@ using Microsoft.Extensions.Primitives;
 namespace Domain.Services;
 
 public interface IHashGeneratorService{
-    public string GenerateHash(string LoactionName = "NUL", int length = 6);
+    public Task<string> GenerateHashAsync(string LoactionName = "NUL", int length = 6);
 }

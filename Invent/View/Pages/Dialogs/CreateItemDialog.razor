@@ -8,7 +8,7 @@
         <MudText Typo="Typo.h5">Create Item</MudText>
     </DialogContent>
     <DialogActions>
-        <EditForm Model="@NewItem" OnValidSubmit="OnValidSubmit" class="container-fluid">
+        <EditForm Model="@NewItem" OnValidSubmit="OnValidSubmitAsync" class="container-fluid">
             <DataAnnotationsValidator/>
             <MudGrid Class="d-block">
                 <MudItem>
@@ -71,8 +71,8 @@
     }
 
 
-    private void OnValidSubmit(EditContext context){
-        NewItem.Code = HashGeneratorService.GenerateHash(Location.Name);
+    private async Task OnValidSubmitAsync(EditContext context){
+        NewItem.Code = await HashGeneratorService.GenerateHashAsync(Location.Name);
         ItemRepository.CreateAsync(NewItem);
         Submit();
     }
