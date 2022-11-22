@@ -13,8 +13,8 @@ var startInfo = new ProcessStartInfo{
 };
 process.StartInfo = startInfo;
 process.StartInfo.Arguments = "/c cd ..\\..\\Database && docker-compose down && docker-compose up -d --build";
-process.Start();
-process.WaitForExit();
+//process.Start();
+//process.WaitForExit();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<StorageDbContext>(
@@ -31,11 +31,12 @@ builder.Services.AddMudServices();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<IHashGeneratorService, HashGeneratorService>();
 builder.Services.AddScoped<SidebarService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment()) {
+if (!app.Environment.IsDevelopment()){
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();

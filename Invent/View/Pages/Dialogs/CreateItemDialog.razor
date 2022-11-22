@@ -1,5 +1,7 @@
-﻿@inject IItemRepository ItemRepository
+﻿@using Domain.Services
+@inject IItemRepository ItemRepository
 @inject ILocationRepository LocationRepository
+@inject IHashGeneratorService HashGeneratorService
 
 <MudDialog>
     <DialogContent>
@@ -16,7 +18,7 @@
                                           @bind-Value="NewItem.Name" For="@(() => NewItem.Name)"/>
                             <MudTextField Label="Description" Class="mt-3"
                                           @bind-Value="NewItem.Description" For="@(() => NewItem.Description)"/>
-                            <MudTextField Label="Code" Class="mt-3"
+                            <MudTextField Label="Code" Class="mt-3" disabled="true"
                                           @bind-Value="NewItem.Code" For="@(() => NewItem.Code)"/>
                             <MudSelect T="EItemType" Label="Itemtype" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" @bind-Value="NewItem.ItemType" For="@(() => NewItem.ItemType)">
                                 @foreach (var type in Enum.GetValues<EItemType>()) {
@@ -69,7 +71,8 @@
     }
 
 
-    private void OnValidSubmit(EditContext context) {
+    private void OnValidSubmit(EditContext context){
+        NewItem.Code = HashGeneratorService.GenerateHash(Location.Name);
         ItemRepository.CreateAsync(NewItem);
         Submit();
     }
