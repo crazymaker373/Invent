@@ -73,7 +73,7 @@
 
     private async Task OnValidSubmitAsync(EditContext context){
         NewItem.Code = await HashGeneratorService.GenerateHashAsync(Location.Name);
-        ItemRepository.CreateAsync(NewItem);
+        await ItemRepository.CreateAsync(NewItem);
         Submit();
     }
 }

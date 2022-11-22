@@ -11,6 +11,7 @@
             <MudCard>
                 <MudCardContent>
                     <MudTextField Label="Name" @bind-Value="Location.Name" For="@(() => Location.Name)"/>
+                    <MudTextField Label="Address" @bind-Value="Location.Address" For="@(() => Location.Address)"/>
                     <MudBooleanInput Label="Is Remote" @bind-Value="Location.IsRemote" For="@(() => Location.IsRemote)"/>
                 </MudCardContent>
                 <MudCardActions>
