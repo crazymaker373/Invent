@@ -13,6 +13,11 @@ public class Location {
     [Column("NAME", TypeName = "VARCHAR(45)")]
     [Required]
     public string Name { get; set; }
+    
+
+    [Column("ADDRESS", TypeName = "VARCHAR(45)")]
+    [Required]
+    public string Address { get; set; }
 
     [Column("IS_REMOTE")] [Required] public bool IsRemote { get; set; }
 
