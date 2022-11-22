@@ -18,6 +18,7 @@
                                 <MudLink Href=@($"/{Id}/{location.Id}/items") Class="mx-auto my-auto"><MudImage  Src="room1.svg" Height="700"/></MudLink>
                             </div>
                             <MudText Align="Align.Center" Typo="Typo.h5">@location.Name</MudText>
+                            <MudText Align="Align.Center">@location.Address</MudText>
                             <MudText Align="Align.Center">@location.IsRemote</MudText>
                         </div>
                     </MudCarouselItem>
