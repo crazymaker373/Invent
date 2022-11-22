@@ -18,15 +18,15 @@
                                           @bind-Value="NewItem.Name" For="@(() => NewItem.Name)"/>
                             <MudTextField Label="Description" Class="mt-3"
                                           @bind-Value="NewItem.Description" For="@(() => NewItem.Description)"/>
-                            <MudTextField Label="Code" Class="mt-3" disabled="true"
+                            <MudTextField Label="Code" Class="mt-3"
                                           @bind-Value="NewItem.Code" For="@(() => NewItem.Code)"/>
                             <MudSelect T="EItemType" Label="Itemtype" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" @bind-Value="NewItem.ItemType" For="@(() => NewItem.ItemType)">
-                                @foreach (var type in Enum.GetValues<EItemType>()) {
+                                @foreach (var type in Enum.GetValues<EItemType>()){
                                     <MudSelectItem Value="type"/>
                                 }
                             </MudSelect>
                             <MudSelect T="Location" Label="Location" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" @bind-Value="NewItem.Location" For="@(() => NewItem.Location)">
-                                @foreach (var location in Locations) {
+                                @foreach (var location in Locations){
                                     <MudSelectItem Value="location">@location.Name</MudSelectItem>
                                 }
                             </MudSelect>
@@ -49,31 +49,39 @@
 
     [Parameter]
     public int InventoryId { get; set; }
-    
+
     [Parameter]
     public Location? Location { get; set; }
 
     public Item NewItem { get; set; } = new();
 
     public List<Location> Locations { get; set; } = new();
-
-    void Submit() {
+    
+    private string code = String.Empty;
+    
+    void Submit(){
         MudDialog.Close(DialogResult.Ok(NewItem));
     }
-
-    void Cancel() {
+    
+    void Cancel(){
         MudDialog.Cancel();
     }
 
-    protected override async Task OnParametersSetAsync() {
+    protected override async Task OnParametersSetAsync(){
         Locations = await LocationRepository.ReadGraphAsync(InventoryId);
         NewItem.Location = Location ?? Locations.First();
     }
 
 
     private async Task OnValidSubmitAsync(EditContext context){
-        NewItem.Code = await HashGeneratorService.GenerateHashAsync(Location.Name);
+        NewItem.Code = code;
         await ItemRepository.CreateAsync(NewItem);
         Submit();
     }
+
+    protected override async Task OnInitializedAsync(){
+        code = await HashGeneratorService.GenerateHashAsync(Location.Name);
+        NewItem.Code = code;
+    }
+
 }
