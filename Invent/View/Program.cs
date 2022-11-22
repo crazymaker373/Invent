@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Domain.Repositories;
 using Domain.Services;
 using Microsoft.EntityFrameworkCore;
@@ -5,15 +6,15 @@ using Model.Configurations;
 using MudBlazor.Services;
 
 //start docker container
-//var process = new Process();
-//var startInfo = new ProcessStartInfo{
-//    WindowStyle = ProcessWindowStyle.Hidden,
-//    FileName = "cmd.exe"
-//};
-//process.StartInfo = startInfo;
-//process.StartInfo.Arguments = "/c cd ..\\..\\Database && docker-compose down && docker-compose up -d --build";
-//process.Start();
-//process.WaitForExit();
+var process = new Process();
+var startInfo = new ProcessStartInfo{
+    WindowStyle = ProcessWindowStyle.Hidden,
+    FileName = "cmd.exe"
+};
+process.StartInfo = startInfo;
+process.StartInfo.Arguments = "/c cd ..\\..\\Database && docker-compose down && docker-compose up -d --build";
+process.Start();
+process.WaitForExit();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<StorageDbContext>(
