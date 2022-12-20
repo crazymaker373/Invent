@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - itplinvent
+name: Build and deploy ASP.Net Core app to Azure Web App - ITPLInvent
 
 on:
   push:
@@ -23,9 +23,11 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
+        working-directory: ./Invent
         run: dotnet build --configuration Release
 
       - name: dotnet publish
+        working-directory: ./Invent
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
@@ -51,7 +53,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'itplinvent'
+          app-name: 'ITPLInvent'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EEB7E651BF95490B8151FDC2E81E06B5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55BCE4D9EB0D46FB9DBDE8F811243451 }}
           package: .
