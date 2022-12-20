@@ -13,8 +13,8 @@ var startInfo = new ProcessStartInfo{
 };
 process.StartInfo = startInfo;
 process.StartInfo.Arguments = "/c cd ..\\..\\Database && docker-compose down && docker-compose up -d --build";
-//process.Start();
-//process.WaitForExit();
+process.Start();
+process.WaitForExit();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<StorageDbContext>(
