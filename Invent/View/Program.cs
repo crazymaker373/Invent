@@ -13,14 +13,12 @@ var startInfo = new ProcessStartInfo{
 };
 process.StartInfo = startInfo;
 process.StartInfo.Arguments = "/c cd ..\\..\\Database && docker-compose down && docker-compose up -d --build";
-process.Start();
-process.WaitForExit();
+//process.Start();
+//process.WaitForExit();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<StorageDbContext>(
-    options => options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 27))
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 
