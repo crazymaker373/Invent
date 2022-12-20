@@ -23,11 +23,9 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        working-directory: ./Invent
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        working-directory: ./Invent
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
@@ -55,5 +53,5 @@ jobs:
         with:
           app-name: 'itplinvent'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3AFEA7DEB47E42E1B6E7CD6B40201A99 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_04AF698D50D345DAB81E2D861804D035 }}
           package: .
