@@ -17,5 +17,8 @@ public class ItemRepository : ARepository<Item>, IItemRepository {
         .Include(i => i.Location)
         .Where(i => i.LocationId == locationId)
         .ToListAsync();
-    
+
+    public async Task<Item> ReadByCodeAsync(string code) => await Set
+        .Include(i => i.Location)
+        .FirstOrDefaultAsync(i => i.Code == code);
 }

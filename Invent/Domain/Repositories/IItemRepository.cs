@@ -6,4 +6,6 @@ public interface IItemRepository : IRepository<Item> {
     public Task<List<Item>> ReadGraphAsync(int id);
     
     public Task<List<Item>> ReadByLocationAsync(int locationId);
+    
+    public Task<Item> ReadByCodeAsync(string code);
 }

@@ -11,11 +11,6 @@ public abstract class AController<TEntity> : ControllerBase where TEntity : clas
         _repository = repository;
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<TEntity>> ReadAsync([Required] int id) {
-        return Ok(await _repository.ReadAsync(id));
-    }
-
     [HttpGet]
     public async Task<ActionResult<List<TEntity>>> ReadAllAsync() {
         return Ok(await _repository.ReadAllAsync());
