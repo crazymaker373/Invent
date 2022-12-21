@@ -7,6 +7,6 @@ namespace Controller.Controllers;
 [ApiController]
 [Route("location")]
 public class LocationController : AController<Location> {
-    public LocationController(IRepository<Location> repository) : base(repository) {
+    public LocationController(ILocationRepository repository) : base(repository) {
     }
 }

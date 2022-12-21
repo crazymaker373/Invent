@@ -7,6 +7,6 @@ namespace Controller.Controllers;
 [ApiController]
 [Route("inventory")]
 public class InventoryController : AController<Inventory> {
-    public InventoryController(IRepository<Inventory> repository) : base(repository) {
+    public InventoryController(IInventoryRepository repository) : base(repository) {
     }
 }
