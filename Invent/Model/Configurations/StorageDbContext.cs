@@ -17,5 +17,7 @@ public class StorageDbContext : DbContext {
         builder.Entity<Item>().HasOne(i => i.Location).WithMany().HasForeignKey(i => i.LocationId);
 
         builder.Entity<Location>().HasOne(i => i.Inventory).WithMany().HasForeignKey(i => i.InventoryId);
+
+        builder.Entity<Item>().Property(i => i.ItemType).HasConversion<string>();
     }
 }
