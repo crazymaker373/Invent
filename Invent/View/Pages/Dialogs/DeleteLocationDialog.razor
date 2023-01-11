@@ -19,7 +19,7 @@
     public Location Location { get; set; } = null!;
 
     void Submit() {
-        MudDialog.Close(DialogResult.Ok(Location));
+        MudDialog.Close(DialogResult.Ok(true));
     }
 
     void Cancel() {

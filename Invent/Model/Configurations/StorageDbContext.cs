@@ -14,9 +14,9 @@ public class StorageDbContext : DbContext {
 
     protected override void OnModelCreating(ModelBuilder builder) {
         builder.Entity<Item>().HasIndex(i => i.Code).IsUnique();
-        builder.Entity<Item>().HasOne(i => i.Location).WithMany().HasForeignKey(i => i.LocationId);
+        builder.Entity<Item>().HasOne(i => i.Location).WithMany(l => l.Items).HasForeignKey(i => i.LocationId);
 
-        builder.Entity<Location>().HasOne(i => i.Inventory).WithMany().HasForeignKey(i => i.InventoryId);
+        builder.Entity<Location>().HasOne(i => i.Inventory).WithMany(i => i.Locations).HasForeignKey(i => i.InventoryId);
         
         builder.Entity<Item>().Property(i => i.ItemType).HasConversion<string>();
     }

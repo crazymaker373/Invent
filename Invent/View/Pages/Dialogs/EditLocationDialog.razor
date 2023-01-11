@@ -14,7 +14,7 @@
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton OnClick="Cancel">Cancel</MudButton>
-                    <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Rename</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Rename</MudButton>
                 </MudCardActions>
             </MudCard>
         </EditForm>
@@ -33,7 +33,7 @@
     public int InventoryId { get; set; }
 
     void Submit() {
-        MudDialog.Close(DialogResult.Ok(Location));
+        MudDialog.Close(DialogResult.Ok(true));
     }
 
     void Cancel() {

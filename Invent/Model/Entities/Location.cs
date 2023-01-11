@@ -24,4 +24,6 @@ public class Location {
     [Column("INVENTORY_ID")] public int InventoryId { get; set; }
 
     public Inventory Inventory { get; set; }
+
+    public ICollection<Item> Items { get; set; } = new List<Item>();
 }

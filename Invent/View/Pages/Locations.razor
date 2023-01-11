@@ -1,13 +1,13 @@
 ﻿@page "/{id:int}/locations"
 @inherits SidebarComponent
-@inject ILocationRepository LocationRepository
+@inject IInventoryRepository InventoryRepository
 @inject IDialogService DialogService
 
 <PageTitle>Locations</PageTitle>
 
 <MudText Align="Align.Center" Typo="Typo.h4">Locations</MudText>
 
-<DataInit Data="LocationList">
+<DataInit Data="Inventory.Locations">
     <ChildContent Context="locations">
         @if (locations.Any()) {
             <MudCarousel Class="mud-width-full full-height" ShowArrows="true" ShowBullets="false" EnableSwipeGesture="true" AutoCycle="false" TData="Location">
@@ -40,10 +40,10 @@
     [Parameter]
     public int Id { get; set; }
 
-    private List<Location> LocationList { get; set; } = null!;
+    private Inventory Inventory { get; set; } = new ();
 
     protected override async Task OnParametersSetAsync() {
-        LocationList = await LocationRepository.ReadGraphAsync(Id);
+        Inventory = await InventoryRepository.ReadGraphAsync(Id);
     }
 
     protected override async Task OnInitializedAsync() {
@@ -66,8 +66,6 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        var resultData = (Location) result.Data;
-        LocationList.Add(resultData);
         StateHasChanged();
     }
 
@@ -78,9 +76,6 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        var resultData = (Location) result.Data;
-        var index = LocationList.IndexOf(resultData);
-        LocationList.RemoveAt(index);
         StateHasChanged();
     }
 
@@ -91,9 +86,6 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        var resultData = (Location) result.Data;
-        var index = LocationList.IndexOf(resultData);
-        LocationList[index] = resultData;
         StateHasChanged();
     }
 

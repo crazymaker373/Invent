@@ -23,7 +23,7 @@
     [Parameter]
     public int LocationId { get; set; }
 
-    private List<Item> ItemList { get; set; } = null!;
+    private List<Item> ItemList { get; set; } = new ();
 
     Location? Location { get; set; }
 

@@ -3,5 +3,8 @@
 namespace Domain.Repositories;
 
 public interface IInventoryRepository : IRepository<Inventory> {
-    Task UpdateLastEditAsync(Inventory inventory);
+
+    public Task<Inventory?> ReadGraphAsync(int id);
+    
+    public Task UpdateLastEditAsync(Inventory inventory);
 }
