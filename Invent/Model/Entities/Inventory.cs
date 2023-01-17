@@ -14,7 +14,7 @@ public class Inventory {
 
     [Column("CREATED_AT")] public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-    [Column("LAST_EDIT")] public DateTime LastEdit { get; set; }
+    [Column("LAST_EDIT")] public DateTime LastEdit { get; set; } = DateTime.Now;
 
     public ICollection<Location> Locations { get; set; } = new List<Location>();
 }

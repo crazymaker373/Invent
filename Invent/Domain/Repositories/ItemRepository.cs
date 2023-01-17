@@ -12,10 +12,4 @@ public class ItemRepository : ARepository<Item>, IItemRepository {
         .Include(i => i.Location)
         .Where(i => i.Location.InventoryId == id)
         .ToListAsync();
-
-    public async Task<List<Item>> ReadByLocationAsync(int locationId) => await Set
-        .Include(i => i.Location)
-        .Where(i => i.LocationId == locationId)
-        .ToListAsync();
-    
 }

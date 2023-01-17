@@ -50,7 +50,7 @@
 
     [Parameter]
     [EditorRequired]
-    public List<Item> ItemList { get; set; } = null!;
+    public List<Item> ItemList { get; set; }
 
     [Parameter]
     [EditorRequired]
@@ -59,11 +59,10 @@
     [Parameter]
     [EditorRequired]
     public Location? Location { get; set; }
- 
 
-    List<Item> ItemListBackup { get; set; } = null!;
+    List<Item> ItemListBackup { get; set; } = new();
+    
     string? _searchString;
-
 
     protected override void OnParametersSet() {
         ItemListBackup = ItemList;
@@ -86,9 +85,6 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        var resultItem = (Item) result.Data;
-        var index = ItemList.IndexOf(resultItem);
-        ItemList.RemoveAt(index);
         StateHasChanged();
     }
 
@@ -99,9 +95,6 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        var resultItem = (Item) result.Data;
-        var index = ItemList.IndexOf(resultItem);
-        ItemList[index] = resultItem;
         StateHasChanged();
     }
 
@@ -112,8 +105,6 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        var resultItem = (Item) result.Data;
-        ItemList.Add(resultItem);
         StateHasChanged();
     }
 

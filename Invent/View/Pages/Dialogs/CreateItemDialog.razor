@@ -19,21 +19,21 @@
                             <MudTextField Label="Description" Class="mt-3"
                                           @bind-Value="NewItem.Description" For="@(() => NewItem.Description)"/>
                             <MudTextField Label="Code" Class="mt-3"
-                                          @bind-Value="NewItem.Code" For="@(() => NewItem.Code)" Disabled="true"/>
+                                          @bind-Value="NewItem.Code" For="@(() => NewItem.Code)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Autorenew" OnAdornmentClick="GenerateCodeAsync" ReadOnly="true"/>
                             <MudSelect T="EItemType" Label="Itemtype" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" @bind-Value="NewItem.ItemType" For="@(() => NewItem.ItemType)">
-                                @foreach (var type in Enum.GetValues<EItemType>()){
+                                @foreach (var type in Enum.GetValues<EItemType>()) {
                                     <MudSelectItem Value="type"/>
                                 }
                             </MudSelect>
                             <MudSelect Label="Location" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" @bind-Value="NewItem.Location" For="@(() => NewItem.Location)">
-                                @foreach (var location in Locations){
+                                @foreach (var location in Locations) {
                                     <MudSelectItem Value="location">@location.Name</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudCardContent>
                         <MudCardActions>
                             <MudButton OnClick="Cancel">Cancel</MudButton>
-                            <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Create</MudButton>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Create</MudButton>
                         </MudCardActions>
                     </MudCard>
                 </MudItem>
@@ -56,26 +56,22 @@
     public Item NewItem { get; set; } = new();
 
     public List<Location> Locations { get; set; } = new();
-    
-    private string code = String.Empty;
-    
-    void Submit(){
-        MudDialog.Close(DialogResult.Ok(NewItem));
+
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(true));
     }
-    
-    void Cancel(){
+
+    void Cancel() {
         MudDialog.Cancel();
     }
 
-    private async Task OnValidSubmitAsync(EditContext context){
-        NewItem.Code = code;
+    private async Task OnValidSubmitAsync(EditContext context) {
         await ItemRepository.CreateAsync(NewItem);
         Submit();
     }
-    
-    public async Task GenerateCodeAsync(){
-        code = await HashGeneratorService.GenerateHashAsync(Location.Name);
-        NewItem.Code = code;
+
+    public async Task GenerateCodeAsync() {
+        NewItem.Code = await HashGeneratorService.GenerateHashAsync(Location.Name);
         StateHasChanged();
     }
 
