@@ -20,7 +20,7 @@ public class ItemController : AController<Item> {
         if (item == null) {
             return NotFound();
         }
-        var itemDto = new ItemDto(item.Name, item.Description, item.AddedAt.ToString("dddd, dd MMMM yyyy HH:mm:ss"), item.Code, item.IsMissing, item.ItemType.ToString(), item.Location.Name, item.Location.Address);
+        var itemDto = new ItemDto(item.Name, item.Description, item.AddedAt.ToString("dddd, dd MMMM yyyy HH:mm:ss"), item.Code, item.IsMissing, item.ItemType.ToString(), item.Location.Name, item.Location.Address, item.Location.IsRemote);
         return Ok(itemDto);
     } 
     
