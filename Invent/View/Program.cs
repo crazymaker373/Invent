@@ -1,4 +1,7 @@
 using System.Diagnostics;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 using Domain.Repositories;
 using Domain.Services;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +29,11 @@ builder.Services.AddDbContext<StorageDbContext>(
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
+builder.Services.AddBlazorise( options =>
+    {
+        options.Immediate = true;
+    } ).AddBootstrapProviders()
+    .AddFontAwesomeIcons();
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();

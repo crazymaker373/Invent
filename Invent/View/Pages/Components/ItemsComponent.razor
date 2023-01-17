@@ -24,6 +24,7 @@
             <CellTemplate>
                 <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
                 <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
+                <MudButton StartIcon="@Icons.Material.Filled.QrCode" OnClick="() => OpenQRCodeDialog(context.Item)"/>
             </CellTemplate>
         </Column>
     </Columns>
@@ -102,6 +103,16 @@
         var parameters = new DialogParameters {{"InventoryId", InventoryId}, {"Location", Location}};
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<CreateItemDialog>("", parameters, options);
+
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
+        StateHasChanged();
+    }
+    
+    async void OpenQRCodeDialog(Item item) {
+        var parameters = new DialogParameters {{"Item", item}};
+        var options = new DialogOptions {CloseOnEscapeKey = true, CloseButton = true};
+        var dialog = DialogService.Show<ShowQRCodeDialog>("QR Code of " + item.Name, parameters, options);
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
