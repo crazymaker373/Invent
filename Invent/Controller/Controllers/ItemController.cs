@@ -1,5 +1,6 @@
 ﻿using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Model.Dtos;
 using Model.Entities;
 
 namespace Controller.Controllers;
@@ -11,8 +12,16 @@ public class ItemController : AController<Item> {
     public ItemController(IItemRepository repository) : base(repository) {
         _itemRepository = repository;
     }
-    
+
     [HttpGet("{code}")]
-    public async Task<ActionResult<Item>> ReadByCode(string code) => Ok(await _itemRepository.ReadByCodeAsync(code));
+    public async Task<ActionResult<ItemDto>> ReadByCode(string code) {
+        var item = await _itemRepository.ReadByCodeAsync(code);
+        
+        if (item == null) {
+            return NotFound();
+        }
+        var itemDto = new ItemDto(item.Name, item.Description, item.AddedAt.ToString("dddd, dd MMMM yyyy HH:mm:ss"), item.Code, item.IsMissing, item.ItemType.ToString(), item.Location.Name, item.Location.Address);
+        return Ok(itemDto);
+    } 
     
 }
