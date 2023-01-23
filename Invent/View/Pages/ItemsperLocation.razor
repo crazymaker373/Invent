@@ -1,4 +1,4 @@
-﻿@page "/{id:int}/items"
+﻿@page "/{id:int}/{locationId:int}/items"
 @inherits SidebarComponent
 @inject IItemRepository ItemRepository
 @inject ILocationRepository LocationRepository
@@ -9,7 +9,7 @@
 
 <DataInit Data="ItemList">
     <ChildContent Context="itemList">
-        <ItemsComponent ItemList="itemList" InventoryId="Id"/>
+        <ItemsComponent ItemList="itemList" InventoryId="Id" Location="Location"/>
     </ChildContent>
 </DataInit>
 
@@ -18,6 +18,9 @@
 
     [Parameter]
     public int Id { get; set; }
+
+    [Parameter]
+    public int LocationId { get; set; }
 
     private List<Item> ItemList { get; set; } = new();
 
@@ -33,7 +36,13 @@
             Link = $"{Id}/items"
         });
 
-        ItemList = await ItemRepository.ReadGraphAsync(Id);
+        if (LocationId is not 0) {
+            Location = await LocationRepository.ReadAsync(LocationId);
+            ItemList = (List<Item>) Location.Items;
+        }
+        else {
+            ItemList = await ItemRepository.ReadGraphAsync(Id);
+        }
 
         await base.OnInitializedAsync();
     }

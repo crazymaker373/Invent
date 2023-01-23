@@ -1,5 +1,7 @@
-﻿@inject IItemRepository ItemRepository
+﻿@using Domain.Services
+@inject IItemRepository ItemRepository
 @inject ILocationRepository LocationRepository
+@inject IHashGeneratorService HashGeneratorService
 
 <MudDialog>
     <DialogContent>
@@ -17,8 +19,7 @@
                             <MudTextField Label="Description" Class="mt-3"
                                           @bind-Value="Item.Description" For="@(() => Item.Description)"/>
                             <MudTextField Label="Code" Class="mt-3"
-                                          @bind-Value="Item.Code" For="@(() => Item.Code)"/>
-
+                                          @bind-Value="Item.Code" For="@(() => Item.Code)" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Autorenew" OnAdornmentClick="GenerateCodeAsync" ReadOnly="true"/>
                             <MudSelect T="EItemType" Label="Itemtype"
                                        Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter"
                                        @bind-Value="Item.ItemType" For="@(() => Item.ItemType)">
@@ -26,7 +27,7 @@
                                     <MudSelectItem Value="type"/>
                                 }
                             </MudSelect>
-                            <MudSelect T="Location" Label="Location"
+                            <MudSelect Label="Location"
                                        Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter"
                                        @bind-Value="Item.Location" For="@(() => Item.Location)">
                                 @foreach (var location in Locations) {
@@ -72,8 +73,12 @@
 
     private async Task OnValidSubmit(EditContext context) {
         await ItemRepository.UpdateAsync(Item);
-        Console.WriteLine("Item updated");
         Submit();
+    }
+
+    public async Task GenerateCodeAsync() {
+        Item.Code = await HashGeneratorService.GenerateHashAsync(Item.Location.Name);
+        StateHasChanged();
     }
 
 }

@@ -71,7 +71,7 @@
     }
 
     public async Task GenerateCodeAsync() {
-        NewItem.Code = await HashGeneratorService.GenerateHashAsync(Location.Name);
+        NewItem.Code = await HashGeneratorService.GenerateHashAsync(NewItem.Location.Name);
         StateHasChanged();
     }
 

@@ -22,9 +22,9 @@
         <Column T="Item" Field="Code" Sortable="false"/>
         <Column T="Item" Sortable="false" Filterable="false">
             <CellTemplate>
-                <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
-                <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
                 <MudButton StartIcon="@Icons.Material.Filled.QrCode" OnClick="() => OpenQRCodeDialog(context.Item)"/>
+                <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
+                <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
             </CellTemplate>
         </Column>
     </Columns>
@@ -58,7 +58,6 @@
     public int InventoryId { get; set; }
     
     [Parameter]
-    [EditorRequired]
     public Location? Location { get; set; }
 
     List<Item> ItemListBackup { get; set; } = new();
@@ -100,7 +99,10 @@
     }
 
     async void OpenCreateItemDialog() {
-        var parameters = new DialogParameters {{"InventoryId", InventoryId}, {"Location", Location}};
+        var parameters = new DialogParameters {{"InventoryId", InventoryId}};
+        if (Location is not null) {
+            parameters.Add("Location", Location);
+        }
         var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
         var dialog = DialogService.Show<CreateItemDialog>("", parameters, options);
 
