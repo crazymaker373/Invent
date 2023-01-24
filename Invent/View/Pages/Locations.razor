@@ -15,11 +15,24 @@
                     <MudCarouselItem Transition="Transition.Slide">
                         <div>
                             <div class="d-flex animate-up-down">
-                                <MudLink Href=@($"/{Id}/{location.Id}/items") Class="mx-auto my-auto"><MudImage  Src="room1.svg" Height="700"/></MudLink>
+                                <MudLink Href=@($"/{Id}/{location.Id}/items") Class="mx-auto my-auto">
+                                    @if (location.IsRemote) {
+                                        <MudImage Src="images/truck.png" Height="700" Class="rounded-lg"/>
+                                    }
+                                    else {
+                                        <MudImage Src="room1.svg" Height="700"/>
+                                    }
+                                </MudLink>
                             </div>
-                            <MudText Align="Align.Center" Typo="Typo.h5">@location.Name</MudText>
+                            <MudText Align="Align.Center" Typo="Typo.h5">
+                                @location.Name
+                            </MudText>
                             <MudText Align="Align.Center">@location.Address</MudText>
-                            <MudText Align="Align.Center">@location.IsRemote</MudText>
+                            <MudText Align="Align.Center">@(location.IsRemote ? "is Remote" : "is not remote")</MudText>
+                            <div class="text-center">
+                                <MudIconButton Icon="@Icons.Filled.Edit" OnClick="@(() => OpenEditLocationDialog(location))" Size="Size.Small"/>
+                                <MudIconButton Icon="@Icons.Filled.Delete" Color="Color.Error" OnClick="@(() => OpenDeleteLocationDialog(location))" Size="Size.Small"/>
+                            </div>
                         </div>
                     </MudCarouselItem>
                 }
@@ -40,7 +53,7 @@
     [Parameter]
     public int Id { get; set; }
 
-    private Inventory Inventory { get; set; } = new ();
+    private Inventory Inventory { get; set; } = new();
 
     protected override async Task OnParametersSetAsync() {
         Inventory = await InventoryRepository.ReadGraphAsync(Id);
@@ -76,6 +89,7 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
+        Inventory.Locations.Remove(location);
         StateHasChanged();
     }
 

@@ -11,10 +11,12 @@
             <MudCard>
                 <MudCardContent>
                     <MudTextField Label="Name" @bind-Value="Location.Name" For="@(() => Location.Name)"/>
+                    <MudTextField Label="Address" @bind-Value="Location.Address" For="@(() => Location.Address)"/>
+                    <MudCheckBox T="bool" Label="Is Remote" @bind-Checked="Location.IsRemote" For="@(() => Location.IsRemote)"/>
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton OnClick="Cancel">Cancel</MudButton>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Rename</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Save</MudButton>
                 </MudCardActions>
             </MudCard>
         </EditForm>
