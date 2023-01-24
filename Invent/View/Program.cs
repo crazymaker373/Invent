@@ -39,6 +39,7 @@ builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddSingleton<IHashGeneratorService, HashGeneratorService>();
 builder.Services.AddScoped<SidebarService>();
+builder.Services.AddSingleton<ViewRefreshService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
