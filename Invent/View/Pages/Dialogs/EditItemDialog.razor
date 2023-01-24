@@ -29,7 +29,7 @@
                             </MudSelect>
                             <MudSelect Label="Location"
                                        Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter"
-                                       @bind-Value="Item.Location" For="@(() => Item.Location)">
+                                       @bind-Value="Item.Location" For="@(() => Item.Location)" ToStringFunc="location => location.Name">
                                 @foreach (var location in Locations) {
                                     <MudSelectItem Value="@location">@location.Name</MudSelectItem>
                                 }
@@ -78,7 +78,6 @@
 
     public async Task GenerateCodeAsync() {
         Item.Code = await HashGeneratorService.GenerateHashAsync(Item.Location.Name);
-        StateHasChanged();
     }
 
 }

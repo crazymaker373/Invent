@@ -58,7 +58,7 @@
     public List<Location> Locations { get; set; } = new();
 
     void Submit() {
-        MudDialog.Close(DialogResult.Ok(true));
+        MudDialog.Close(DialogResult.Ok(NewItem));
     }
 
     void Cancel() {
@@ -77,7 +77,7 @@
 
     protected override async Task OnInitializedAsync() {
         Locations = await LocationRepository.ReadGraphAsync(InventoryId);
-        NewItem.Location = Location ?? Locations.First();
+        NewItem.Location = Locations.First();
         await GenerateCodeAsync();
     }
 

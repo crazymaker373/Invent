@@ -1,7 +1,10 @@
 ﻿@page "/{id:int}/{locationId:int}/items"
+@using Domain.Services
 @inherits SidebarComponent
 @inject IItemRepository ItemRepository
 @inject ILocationRepository LocationRepository
+@inject ViewRefreshService ViewRefreshService
+@implements IDisposable
 
 <PageTitle>Items</PageTitle>
 
@@ -22,7 +25,7 @@
     [Parameter]
     public int LocationId { get; set; }
 
-    private List<Item> ItemList { get; set; } = new();
+    private List<Item>? ItemList { get; set; }
 
     Location? Location { get; set; }
 
@@ -37,14 +40,22 @@
         });
 
         if (LocationId is not 0) {
-            Location = await LocationRepository.ReadAsync(LocationId);
-            ItemList = (List<Item>) Location.Items;
+            ItemList = await ItemRepository.ReadGraphAsync(Id, LocationId);
         }
         else {
             ItemList = await ItemRepository.ReadGraphAsync(Id);
         }
+        
+        ViewRefreshService.HandleViewChange += Refresh;
 
         await base.OnInitializedAsync();
     }
+    
+    async void Refresh() {
+        await InvokeAsync(StateHasChanged);
+    }
 
+    public void Dispose() {
+        ViewRefreshService.HandleViewChange -= Refresh;
+    }
 }

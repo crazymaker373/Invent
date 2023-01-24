@@ -1,4 +1,6 @@
-﻿@inject IDialogService DialogService
+﻿@using Domain.Services
+@inject IDialogService DialogService
+@inject ViewRefreshService ViewRefreshService
 
 <MudDataGrid T="Item" MultiSelection="true" Items="@ItemList" SortMode="SortMode.Multiple" Filterable="true"
              Hideable="true" Virtualize="true">
@@ -22,7 +24,7 @@
         <Column T="Item" Field="Code" Sortable="false"/>
         <Column T="Item" Sortable="false" Filterable="false">
             <CellTemplate>
-                <MudButton StartIcon="@Icons.Material.Filled.QrCode" OnClick="() => OpenQRCodeDialog(context.Item)"/>
+                <MudButton StartIcon="@Icons.Material.Filled.QrCode" OnClick="() => OpenQrCodeDialog(context.Item)"/>
                 <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
                 <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
             </CellTemplate>
@@ -85,7 +87,8 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        StateHasChanged();
+        ItemList.Remove(item);
+        ViewRefreshService.RefreshView();
     }
 
     async void OpenEditItemDialog(Item item) {
@@ -95,7 +98,7 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        StateHasChanged();
+        ViewRefreshService.RefreshView();
     }
 
     async void OpenCreateItemDialog() {
@@ -108,17 +111,19 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        StateHasChanged();
+        var item = (Item) result.Data;
+        ItemList.Add(item);
+        ViewRefreshService.RefreshView();
     }
     
-    async void OpenQRCodeDialog(Item item) {
+    async void OpenQrCodeDialog(Item item) {
         var parameters = new DialogParameters {{"Item", item}};
         var options = new DialogOptions {CloseOnEscapeKey = true, CloseButton = true};
         var dialog = DialogService.Show<ShowQRCodeDialog>("QR Code of " + item.Name, parameters, options);
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        StateHasChanged();
+        ViewRefreshService.RefreshView();
     }
 
 }
