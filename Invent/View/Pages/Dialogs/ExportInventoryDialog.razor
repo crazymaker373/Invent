@@ -1,0 +1,45 @@
+﻿@using Domain.Services
+@inject IJSRuntime JsRuntime
+@inject SerializeService SerializeService
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h5">Export @Inventory.Name</MudText>
+        <pre class="bg-dark">@Json[..1000]</pre>
+    </DialogContent>
+    <DialogActions>
+        <MudButton EndIcon="@Icons.Material.Filled.ImportExport" Color="Color.Success" Variant="Variant.Outlined" OnClick="ExportInventory">Export</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public Inventory Inventory { get; set; } = null!;
+
+    public string Json { get; set; }
+
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
+
+    protected override async Task OnInitializedAsync() {
+        Json = SerializeService.Serialize(Inventory.ToDto());
+
+        await base.OnInitializedAsync();
+    }
+
+
+    private async Task ExportInventory()
+    {
+        await JsRuntime.InvokeVoidAsync("downloadFile", Json, $"{Inventory.Name}.json", "application/json");
+    }
+
+}

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Model.Entities.Dtos;
 
 namespace Model.Entities;
 
@@ -26,4 +27,15 @@ public class Location {
     public Inventory Inventory { get; set; }
 
     public ICollection<Item> Items { get; set; } = new List<Item>();
+    
+    public LocationDto ToDto() {
+        return new LocationDto {
+            Id = Id,
+            Name = Name,
+            Address = Address,
+            IsRemote = IsRemote,
+            InventoryId = InventoryId,
+            Items = Items.Select(i => i.ToDto()).ToList()
+        };
+    }
 }

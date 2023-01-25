@@ -12,6 +12,10 @@ public class InventoryRepository : ARepository<Inventory>, IInventoryRepository 
         .Where(i => i.Id == id)
         .Include(i => i.Locations).FirstOrDefaultAsync();
 
+    public async Task<List<Inventory>> ReadAllGraphAsync() => await Set
+        .Include(i => i.Locations)
+        .ThenInclude(l => l.Items).ToListAsync();
+
     public async Task UpdateLastEditAsync(Inventory inventory) {
         inventory.LastEdit = DateTime.Now;
         await UpdateAsync(inventory);

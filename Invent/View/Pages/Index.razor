@@ -22,6 +22,8 @@
                         <MudCardActions>
                             <MudButton Variant="Variant.Text" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditInventoryDialog(inventory)">Edit</MudButton>
                             <MudSpacer/>
+                            <MudButton Variant="Variant.Text" Color="Color.Success" StartIcon="@Icons.Material.Filled.ImportExport" OnClick="() => OpenExportInventoryDialog(inventory)">Export</MudButton>
+                            <MudSpacer/>
                             <MudButton Variant="Variant.Text" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteInventoryDialog(inventory)">Delete</MudButton>
                         </MudCardActions>
                     </MudCard>
@@ -43,7 +45,7 @@
     List<Inventory> Inventories { get; set; } = new ();
 
     protected override async Task OnInitializedAsync() {
-        Inventories = await InventoryRepository.ReadAllAsync();
+        Inventories = await InventoryRepository.ReadAllGraphAsync();
 
 
         await base.OnInitializedAsync();
@@ -84,6 +86,15 @@
         var resultData = (Inventory) result.Data;
         Inventories.Add(resultData);
         StateHasChanged();
+    }
+    
+    async void OpenExportInventoryDialog(Inventory inventory) {
+        var parameters = new DialogParameters {{"Inventory", inventory}};
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var dialog = DialogService.Show<ExportInventoryDialog>("", parameters, options);
+
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Model.Entities.Dtos;
 
 namespace Model.Entities;
 
@@ -30,4 +31,17 @@ public class Item {
     [Column("LOCATION_ID")] public int LocationId { get; set; }
 
     public Location Location { get; set; }
+    
+    public ItemDto ToDto() {
+        return new ItemDto {
+            Id = Id,
+            Name = Name,
+            Description = Description,
+            AddedAt = AddedAt,
+            Code = Code,
+            IsMissing = IsMissing,
+            ItemType = ItemType,
+            LocationId = LocationId
+        };
+    }
 }
