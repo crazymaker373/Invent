@@ -5,7 +5,12 @@
 <MudDialog>
     <DialogContent>
         <MudText Typo="Typo.h5">Export @Inventory.Name</MudText>
-        <pre class="bg-dark">@Json[..1000]</pre>
+        @if (Json.Length > 1000) {
+            <pre class="bg-dark">@Json[..1000]</pre>
+        }
+        else {
+            <pre class="bg-dark">@Json</pre>
+        }
     </DialogContent>
     <DialogActions>
         <MudButton EndIcon="@Icons.Material.Filled.ImportExport" Color="Color.Success" Variant="Variant.Outlined" OnClick="ExportInventory">Export</MudButton>

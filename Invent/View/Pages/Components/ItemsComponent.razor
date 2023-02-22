@@ -2,7 +2,7 @@
 @inject IDialogService DialogService
 @inject ViewRefreshService ViewRefreshService
 
-<MudDataGrid T="Item" MultiSelection="true" Items="@ItemList" SortMode="SortMode.Multiple" Filterable="true"
+<MudDataGrid T="Item" Items="@ItemList" SortMode="SortMode.Multiple" Filterable="true"
              Hideable="true" Virtualize="true">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Items @(Location is not null ? $"in {Location.Name}" : "")</MudText>
@@ -46,7 +46,7 @@
         <MudDataGridPager T="Item"/>
     </PagerContent>
 </MudDataGrid>
-<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Class="floating-button" @onclick="OpenCreateItemDialog"/>
+<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Class="floating-button-right" @onclick="OpenCreateItemDialog"/>
 
 
 @code {

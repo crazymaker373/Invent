@@ -1,4 +1,9 @@
-﻿.floating-button {
+﻿.floating-button-left {
+    position: fixed !important;
+    bottom: 25px;
+    right: 100px;
+}
+.floating-button-right {
     position: fixed !important;
     bottom: 25px;
     right: 25px;

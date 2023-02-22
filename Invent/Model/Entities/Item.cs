@@ -34,14 +34,12 @@ public class Item {
     
     public ItemDto ToDto() {
         return new ItemDto {
-            Id = Id,
             Name = Name,
             Description = Description,
             AddedAt = AddedAt,
             Code = Code,
             IsMissing = IsMissing,
-            ItemType = ItemType,
-            LocationId = LocationId
+            ItemType = ItemType.ToString(),
         };
     }
 }

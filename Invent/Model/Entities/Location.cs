@@ -30,11 +30,9 @@ public class Location {
     
     public LocationDto ToDto() {
         return new LocationDto {
-            Id = Id,
             Name = Name,
             Address = Address,
             IsRemote = IsRemote,
-            InventoryId = InventoryId,
             Items = Items.Select(i => i.ToDto()).ToList()
         };
     }

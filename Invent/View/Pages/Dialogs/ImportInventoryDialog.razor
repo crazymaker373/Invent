@@ -1,0 +1,49 @@
+﻿@using Domain.Services
+@using Model.Entities.Dtos
+@inject SerializeService SerializeService
+@inject IItemRepository ItemRepository
+@inject IInventoryRepository InventoryRepository
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h5">Import Inventory</MudText>
+        <MudTextField @bind-Value="Json" Label="Json"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton EndIcon="@Icons.Material.Filled.ImportExport" Color="Color.Success" Variant="Variant.Outlined" OnClick="ImportInventory">Import</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = null!;
+
+    public string Json { get; set; } = "";
+
+    public Inventory NewInventory { get; set; } = new ();
+
+    void Submit() {
+        MudDialog.Close(DialogResult.Ok(NewInventory));
+    }
+
+    void Cancel() {
+        MudDialog.Cancel();
+    }
+
+
+    private async Task ImportInventory() {
+        // TODO check if Code is valid
+        var inventory = SerializeService.Deserialize<InventoryDto>(Json);
+        var allItems = await ItemRepository.ReadAllAsync();
+        var itemsToRemove = new List<ItemDto>();
+        foreach (var location in inventory.Locations) {
+            itemsToRemove.AddRange(location.Items.Where(item => allItems.All(i => i.Code == item.Code)));
+            location.Items.ToList().RemoveAll(i => itemsToRemove.Contains(i));
+            itemsToRemove.Clear();
+        }
+        NewInventory = await InventoryRepository.CreateAsync(inventory.ToInventory());
+        Submit();
+    }
+
+}

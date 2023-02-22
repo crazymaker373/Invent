@@ -37,8 +37,8 @@
     </ChildContent>
 </DataInit>
 
-
-<MudFab Class="floating-button" Color="Color.Primary" OnClick="OpenCreateInventoryDialog" StartIcon="@Icons.Material.Filled.Add"/>
+<MudFab Class="floating-button-left" Color="Color.Success" OnClick="OpenImportInventoryDialog" StartIcon="@Icons.Material.Filled.ImportExport" Label="Import" Size="Size.Large"/>
+<MudFab Class="floating-button-right" Color="Color.Primary" OnClick="OpenCreateInventoryDialog" StartIcon="@Icons.Material.Filled.Add"/>
 
 @code {
 
@@ -95,6 +95,17 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
+    }
+    
+    async void OpenImportInventoryDialog() {
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var dialog = DialogService.Show<ImportInventoryDialog>("", options);
+
+        var result = await dialog.Result;
+        if (result.Cancelled) return;
+        var resultData = (Inventory) result.Data;
+        Inventories.Add(resultData);
+        StateHasChanged();
     }
 
 }

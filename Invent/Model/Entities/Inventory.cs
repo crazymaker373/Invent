@@ -21,7 +21,6 @@ public class Inventory {
     
     public InventoryDto ToDto() {
         return new InventoryDto {
-            Id = Id,
             Name = Name,
             CreatedAt = CreatedAt,
             LastEdit = LastEdit,
