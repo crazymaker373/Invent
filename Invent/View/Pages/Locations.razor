@@ -55,10 +55,6 @@
 
     private Inventory Inventory { get; set; } = new();
 
-    protected override async Task OnParametersSetAsync() {
-        Inventory = await InventoryRepository.ReadGraphAsync(Id);
-    }
-
     protected override async Task OnInitializedAsync() {
         SidebarItems.Add(new SidebarItem {
             Name = "Locations",
@@ -68,6 +64,8 @@
             Name = "Items",
             Link = $"{Id}/items"
         });
+        Inventory = await InventoryRepository.ReadGraphAsync(Id);
+        
         await base.OnInitializedAsync();
     }
 
