@@ -1,11 +1,11 @@
 ﻿@using Blazorise.QRCode
-@inject IJSRuntime JSRuntime
+@inject IJSRuntime JsRuntime
 
 <MudDialog>
     <DialogContent>
         <QRCode Value="@Item.Code" Alt="QRCode image"/>
     </DialogContent>
-    <DialogActions >
+    <DialogActions>
         <div class="justify-content-center">
             <MudButton StartIcon="@Icons.Filled.Print" Variant="Variant.Outlined" OnClick="Print">Print</MudButton>
         </div>
@@ -22,6 +22,6 @@
 
     private async Task Print()
     {
-        await JSRuntime.InvokeVoidAsync("printInvoke");
+        await JsRuntime.InvokeVoidAsync("printInvoke");
     }
 }

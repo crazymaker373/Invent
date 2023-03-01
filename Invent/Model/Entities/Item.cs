@@ -16,7 +16,7 @@ public class Item {
     public string Name { get; set; }
 
     [Column("DESCRIPTION", TypeName = "VARCHAR(45)")]
-    public string Description { get; set; }
+    public string Description { get; set; } = "";
 
     [Column("ADDED_AT")] public DateTime AddedAt { get; set; } = DateTime.Now;
 
@@ -24,7 +24,7 @@ public class Item {
     [Required]
     public string Code { get; set; }
 
-    [Column("IS_MISSING")] public bool IsMissing { get; set; } = false;
+    [Column("IS_MISSING")] public bool IsMissing { get; set; }
 
     [Column("ITEM_TYPE")] [Required] public EItemType ItemType { get; set; }
 

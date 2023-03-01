@@ -2,10 +2,10 @@
 @inject IInventoryRepository InventoryRepository
 
 <MudDialog>
-    <DialogContent>
+    <TitleContent>
         <MudText Typo="Typo.h5">Edit @Location.Name</MudText>
-    </DialogContent>
-    <DialogActions>
+    </TitleContent>
+    <DialogContent>
         <EditForm Model="@Location" OnValidSubmit="OnValidSubmitAsync" class="container-fluid">
             <DataAnnotationsValidator/>
             <MudCard>
@@ -20,7 +20,7 @@
                 </MudCardActions>
             </MudCard>
         </EditForm>
-    </DialogActions>
+    </DialogContent>
 </MudDialog>
 
 @code {

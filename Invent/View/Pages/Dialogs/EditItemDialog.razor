@@ -4,10 +4,10 @@
 @inject IHashGeneratorService HashGeneratorService
 
 <MudDialog>
-    <DialogContent>
+    <TitleContent>
         <MudText Typo="Typo.h5">Edit @Item.Name</MudText>
-    </DialogContent>
-    <DialogActions>
+    </TitleContent>
+    <DialogContent>
         <EditForm Model="@Item" OnValidSubmit="OnValidSubmit" class="container-fluid">
             <DataAnnotationsValidator/>
             <MudGrid Class="d-block">
@@ -43,7 +43,7 @@
                 </MudItem>
             </MudGrid>
         </EditForm>
-    </DialogActions>
+    </DialogContent>
 </MudDialog>
 
 @code {

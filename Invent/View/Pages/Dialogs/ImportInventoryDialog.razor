@@ -1,13 +1,14 @@
 ﻿@using Domain.Services
 @using Model.Entities.Dtos
-@inject SerializeService SerializeService
 @inject IItemRepository ItemRepository
 @inject IInventoryRepository InventoryRepository
 @inject ISnackbar Snackbar
 
 <MudDialog>
-    <DialogContent>
+    <TitleContent>
         <MudText Typo="Typo.h5">Import Inventory</MudText>
+    </TitleContent>
+    <DialogContent>
         <MudTextField @bind-Value="Json" Label="Json"/>
     </DialogContent>
     <DialogActions>
@@ -22,16 +23,11 @@
 
     public string Json { get; set; } = "";
 
-    public Inventory NewInventory { get; set; } = new ();
+    public Inventory NewInventory { get; set; } = new();
 
     void Submit() {
         MudDialog.Close(DialogResult.Ok(NewInventory));
     }
-
-    void Cancel() {
-        MudDialog.Cancel();
-    }
-
 
     private async Task ImportInventory() {
         var allItems = await ItemRepository.ReadAllAsync();
@@ -44,7 +40,7 @@
         NewInventory = await InventoryRepository.CreateAsync(inventory.ToInventory());
         if (itemsToRemove.Any()) {
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomRight;
-            Snackbar.Add($"The following items were not imported because they already exist: {string.Join(", ", itemsToRemove.Select(x => x.Name))}", 
+            Snackbar.Add($"The following items were not imported because they already exist: {string.Join(", ", itemsToRemove.Select(x => x.Name))}",
                 Severity.Error);
         }
         Submit();

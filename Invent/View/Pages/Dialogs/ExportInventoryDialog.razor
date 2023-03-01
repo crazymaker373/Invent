@@ -1,10 +1,11 @@
 ﻿@using Domain.Services
 @inject IJSRuntime JsRuntime
-@inject SerializeService SerializeService
 
 <MudDialog>
-    <DialogContent>
+    <TitleContent>
         <MudText Typo="Typo.h5">Export @Inventory.Name</MudText>
+    </TitleContent>
+    <DialogContent>
         @if (Json.Length > 1000) {
             <pre class="bg-dark">@Json[..1000]</pre>
         }
@@ -25,16 +26,12 @@
     [Parameter]
     public Inventory Inventory { get; set; } = null!;
 
-    public string Json { get; set; }
+    public string Json { get; set; } = String.Empty;
 
     void Submit() {
         MudDialog.Close(DialogResult.Ok(true));
     }
-
-    void Cancel() {
-        MudDialog.Cancel();
-    }
-
+    
     protected override async Task OnInitializedAsync() {
         Json = SerializeService.Serialize(Inventory.ToDto());
 
@@ -42,9 +39,9 @@
     }
 
 
-    private async Task ExportInventory()
-    {
+    private async Task ExportInventory() {
         await JsRuntime.InvokeVoidAsync("downloadFile", Json, $"{Inventory.Name}.json", "application/json");
+        Submit();
     }
 
 }

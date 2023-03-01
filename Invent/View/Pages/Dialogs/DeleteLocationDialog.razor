@@ -1,10 +1,10 @@
 ﻿@inject ILocationRepository LocationRepository
 
 <MudDialog>
-    <DialogContent>
+    <TitleContent>
         <MudText Typo="Typo.h5">Delete Location</MudText>
         <MudText>Are you sure you want to delete @Location.Name and all its items?</MudText>
-    </DialogContent>
+    </TitleContent>
     <DialogActions>
         <MudButton EndIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Outlined" OnClick="@(() => DeleteItem(Location))">Delete</MudButton>
     </DialogActions>
@@ -21,11 +21,6 @@
     void Submit() {
         MudDialog.Close(DialogResult.Ok(true));
     }
-
-    void Cancel() {
-        MudDialog.Cancel();
-    }
-
 
     async void DeleteItem(Location location) {
         await LocationRepository.DeleteAsync(location);

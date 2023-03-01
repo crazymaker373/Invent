@@ -1,10 +1,10 @@
 ﻿@inject IInventoryRepository InventoryRepository
 
 <MudDialog>
-    <DialogContent>
+    <TitleContent>
         <MudText Typo="Typo.h5">Edit @Inventory.Name</MudText>
-    </DialogContent>
-    <DialogActions>
+    </TitleContent>
+    <DialogContent>
         <EditForm Model="@Inventory" OnValidSubmit="OnValidSubmitAsync" class="container-fluid">
             <DataAnnotationsValidator/>
             <MudCard>
@@ -13,11 +13,11 @@
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton OnClick="Cancel">Cancel</MudButton>
-                    <MudButton ButtonType="ButtonType.Submit" OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Rename</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Rename</MudButton>
                 </MudCardActions>
             </MudCard>
         </EditForm>
-    </DialogActions>
+    </DialogContent>
 </MudDialog>
 
 @code {

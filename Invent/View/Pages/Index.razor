@@ -47,7 +47,6 @@
     protected override async Task OnInitializedAsync() {
         Inventories = await InventoryRepository.ReadAllGraphAsync();
 
-
         await base.OnInitializedAsync();
     }
 
@@ -66,7 +65,7 @@
 
     async void OpenDeleteInventoryDialog(Inventory inventory) {
         var parameters = new DialogParameters {{"Inventory", inventory}};
-        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true, CloseButton = true};
         var dialog = DialogService.Show<DeleteInventoryDialog>("", parameters, options);
 
         var result = await dialog.Result;
@@ -88,17 +87,14 @@
         StateHasChanged();
     }
     
-    async void OpenExportInventoryDialog(Inventory inventory) {
+    void OpenExportInventoryDialog(Inventory inventory) {
         var parameters = new DialogParameters {{"Inventory", inventory}};
-        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
-        var dialog = DialogService.Show<ExportInventoryDialog>("", parameters, options);
-
-        var result = await dialog.Result;
-        if (result.Cancelled) return;
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true, CloseButton = true};
+        DialogService.Show<ExportInventoryDialog>("", parameters, options);
     }
     
     async void OpenImportInventoryDialog() {
-        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true};
+        var options = new DialogOptions {CloseOnEscapeKey = true, FullWidth = true, CloseButton = true};
         var dialog = DialogService.Show<ImportInventoryDialog>("", options);
 
         var result = await dialog.Result;

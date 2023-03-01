@@ -1,10 +1,10 @@
 ﻿@inject IItemRepository ItemRepository
 
 <MudDialog>
-    <DialogContent>
+    <TitleContent>
         <MudText Typo="Typo.h5">Delete Item</MudText>
         <MudText>Are you sure you want to delete @Item.Name?</MudText>
-    </DialogContent>
+    </TitleContent>
     <DialogActions>
         <MudButton EndIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Outlined" OnClick="@(() => DeleteItem(Item))">Delete</MudButton>
     </DialogActions>
@@ -21,11 +21,6 @@
     void Submit() {
         MudDialog.Close(DialogResult.Ok(Item));
     }
-
-    void Cancel() {
-        MudDialog.Cancel();
-    }
-
 
     private async void DeleteItem(Item item) {
         await ItemRepository.DeleteAsync(item);

@@ -26,11 +26,13 @@
     protected override async Task OnInitializedAsync() {
         SidebarItems.Add(new SidebarItem {
             Name = "Locations",
-            Link = $"{Id}/locations"
+            Link = $"{Id}/locations",
+            Icon = Icons.Material.Filled.LocationCity
         });
         SidebarItems.Add(new SidebarItem {
             Name = "Items",
-            Link = $"{Id}/items"
+            Link = $"{Id}/items",
+            Icon = Icons.Material.Filled.Build
         });
 
         ItemList = await ItemRepository.ReadGraphAsync(Id);

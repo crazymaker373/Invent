@@ -24,9 +24,9 @@
         <Column T="Item" Field="Code" Sortable="false"/>
         <Column T="Item" Sortable="false" Filterable="false">
             <CellTemplate>
-                <MudButton StartIcon="@Icons.Material.Filled.QrCode" OnClick="() => OpenQrCodeDialog(context.Item)"/>
-                <MudButton StartIcon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
-                <MudButton StartIcon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
+                <MudIconButton Icon="@Icons.Material.Filled.QrCode" OnClick="() => OpenQrCodeDialog(context.Item)"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="() => OpenEditItemDialog(context.Item)"/>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="() => OpenDeleteItemDialog(context.Item)"/>
             </CellTemplate>
         </Column>
     </Columns>

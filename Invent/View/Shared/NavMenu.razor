@@ -1,14 +1,15 @@
 ﻿@using Domain.Services
+@using System.Drawing
 @inject SidebarService SidebarService
 
 <MudNavMenu>
-    <MudNavLink Href="/" Match="NavLinkMatch.All">Inventories</MudNavLink>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Inventory" Class="mb-2">Inventories</MudNavLink>
     @foreach (var item in SidebarService.SidebarItems) {
         if (item.OnClick is not null) {
-            <MudNavLink OnClick="@(() => item.OnClick.Invoke())" Match="NavLinkMatch.All">@item.Name</MudNavLink>
+            <MudNavLink OnClick="@(() => item.OnClick.Invoke())" Match="NavLinkMatch.All" Icon="@item.Icon" Class="mb-2">@item.Name</MudNavLink>
         }
         else {
-            <MudNavLink Href="@item.Link" Match="NavLinkMatch.All">@item.Name</MudNavLink>
+            <MudNavLink Href="@item.Link" Match="NavLinkMatch.All" Icon="@item.Icon" Class="mb-2">@item.Name</MudNavLink>
         }
     }
 </MudNavMenu>

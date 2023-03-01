@@ -7,7 +7,7 @@
 
 <MudText Align="Align.Center" Typo="Typo.h4">Locations</MudText>
 
-<DataInit Data="Inventory.Locations">
+<DataInit Data="Inventory!.Locations">
     <ChildContent Context="locations">
         @if (locations.Any()) {
             <MudCarousel Class="mud-width-full full-height" ShowArrows="true" ShowBullets="false" EnableSwipeGesture="true" AutoCycle="false" TData="Location">
@@ -53,17 +53,20 @@
     [Parameter]
     public int Id { get; set; }
 
-    private Inventory Inventory { get; set; } = new();
+    private Inventory? Inventory { get; set; } = new();
 
     protected override async Task OnInitializedAsync() {
         SidebarItems.Add(new SidebarItem {
             Name = "Locations",
-            Link = $"{Id}/locations"
+            Link = $"{Id}/locations",
+            Icon = Icons.Material.Filled.LocationCity
         });
         SidebarItems.Add(new SidebarItem {
             Name = "Items",
-            Link = $"{Id}/items"
+            Link = $"{Id}/items",
+            Icon = Icons.Material.Filled.Build
         });
+        
         Inventory = await InventoryRepository.ReadGraphAsync(Id);
         
         await base.OnInitializedAsync();
@@ -87,7 +90,7 @@
 
         var result = await dialog.Result;
         if (result.Cancelled) return;
-        Inventory.Locations.Remove(location);
+        Inventory!.Locations.Remove(location);
         StateHasChanged();
     }
 

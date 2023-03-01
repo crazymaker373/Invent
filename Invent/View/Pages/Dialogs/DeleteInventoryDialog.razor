@@ -1,10 +1,10 @@
 ﻿@inject IInventoryRepository InventoryRepository
 
 <MudDialog>
-    <DialogContent>
+    <TitleContent>
         <MudText Typo="Typo.h5">Delete Inventory</MudText>
         <MudText>Are you sure you want to delete @Inventory.Name?</MudText>
-    </DialogContent>
+    </TitleContent>
     <DialogActions>
         <MudButton EndIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Outlined" OnClick="@(() => DeleteInventory(Inventory))">Delete</MudButton>
     </DialogActions>
@@ -21,12 +21,7 @@
     void Submit() {
         MudDialog.Close(DialogResult.Ok(Inventory));
     }
-
-    void Cancel() {
-        MudDialog.Cancel();
-    }
-
-
+    
     private async void DeleteInventory(Inventory inventory) {
         await InventoryRepository.DeleteAsync(inventory);
         Submit();
