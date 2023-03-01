@@ -1,7 +1,10 @@
 ﻿@using Domain.Services
+@using Microsoft.EntityFrameworkCore
+@using Model.Configurations
 @inject IItemRepository ItemRepository
 @inject ILocationRepository LocationRepository
 @inject IHashGeneratorService HashGeneratorService
+@inject StorageDbContext Context
 
 <MudDialog>
     <TitleContent>
@@ -72,7 +75,11 @@
     }
 
     private async Task OnValidSubmit(EditContext context) {
-        await ItemRepository.UpdateAsync(Item);
+        // TODO speichert nicht in DB, warum auch immer
+        Context.ChangeTracker.Clear();
+        Context.Entry(Item).State = EntityState.Modified;
+        await Context.SaveChangesAsync();
+        //await ItemRepository.UpdateAsync(Item);
         Submit();
     }
 
