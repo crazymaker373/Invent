@@ -24,4 +24,18 @@ public class ItemController : AController<Item> {
         return Ok(itemDto);
     } 
     
+    [HttpPost("missing/{code}")]
+    public async Task<ActionResult<ItemDto>> SetMissing(string code) {
+        var item = await _itemRepository.ReadByCodeAsync(code);
+        
+        if (item == null) {
+            return NotFound();
+        }
+        item.IsMissing = true;
+        await _itemRepository.UpdateAsync(item);
+        var itemDto = new ItemDto(item.Name, item.Description, item.AddedAt.ToString("dddd, dd MMMM yyyy HH:mm:ss"), item.Code, item.IsMissing, item.ItemType.ToString(), item.Location.Name, item.Location.Address, item.Location.IsRemote);
+        return Ok(itemDto);
+    }
+    
+    
 }
