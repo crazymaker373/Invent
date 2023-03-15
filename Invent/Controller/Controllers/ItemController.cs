@@ -24,7 +24,7 @@ public class ItemController : AController<Item> {
         return Ok(itemDto);
     } 
     
-    [HttpPost("missing/{code}")]
+    [HttpPost("/missing/{code}")]
     public async Task<ActionResult<ItemDto>> ToggleMissing(string code) {
         var item = await _itemRepository.ReadByCodeAsync(code);
         
