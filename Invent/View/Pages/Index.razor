@@ -10,8 +10,8 @@
         @if (inventories.Any()) {
             <MudContainer Class="d-flex row align-center justify-center">
                 @foreach (var inventory in Inventories) {
-                    <MudCard Class="col-4 m-2">
-                        <MudLink Href=@($"/{inventory.Id}/locations") Underline="Underline.None" Color="Color.Default" Class="inventory">
+                    <MudCard Class="col-4 m-2 baseBlock">
+                        <MudLink Href=@($"/{inventory.Id}/locations") Underline="Underline.None" Color="Color.Default" >
                             <MudCardMedia Image="images/inventory.png" Height="200"/>
                             <MudCardContent>
                                 <MudText Typo="Typo.h5">@inventory.Name</MudText>
