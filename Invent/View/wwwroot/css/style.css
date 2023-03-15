@@ -23,3 +23,9 @@
         transform: translateY(-10px);
     }
 }
+.inventory:hover {
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+a:hover {
+    color: inherit;
+}
